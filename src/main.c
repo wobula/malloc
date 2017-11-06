@@ -35,7 +35,7 @@ t_data	*allocate_data(t_data *start, int capacity, size_t node_count, int storag
 		ft_printf("tny node cot: %d\n", node_count);
 		tmp = tmp->next;
 	}
-	return (start);	
+	return (tmp);	
 }
 
 t_node	*get_head()
@@ -45,7 +45,9 @@ t_node	*get_head()
 
 	if (!head)
 	{
-		get_size = sizeof(t_node) + ((tnysize + sizeof(t_data)) * 100);
+		get_size = sizeof(t_node) +
+					((tnysize + sizeof(t_data)) * 100) +
+					((medsize + sizeof(t_data)) * 100);
 		data = 0;
 		while (data < get_size)
 			data = data + getpagesize();
@@ -53,7 +55,11 @@ t_node	*get_head()
 		head->available = data - (sizeof(t_node) + sizeof(t_data));
 		head->tny = (t_data*)(head + 1);
 		head->tny_size = (sizeof(t_data) + tnysize) * 100;
-		head->tny = allocate_data(head->tny, head->tny_size, 100, tnysize);
+		head->tny_end = allocate_data(head->tny, head->tny_size, 100, tnysize);
+		head->med = (t_data*)(((char*)(head->tny_end + 1)) + tnysize);
+		head->med_size = (sizeof(t_data) + medsize) * 100;
+		head->med_end = allocate_data(head->med, head->med_size, 100, medsize);
+		ft_printf("med start: %p\n", head->med);
 	}
 	return(head);
 }

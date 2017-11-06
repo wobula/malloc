@@ -23,8 +23,11 @@ typedef struct				s_node
 	int						available;
 	size_t					count;
 	struct s_data			*tny;
+	struct s_data			*tny_end;
 	int						tny_size;
 	struct s_data			*med;
+	struct s_data			*med_end;
+	int						med_size;
 }							t_node;
 
 typedef struct				s_data
