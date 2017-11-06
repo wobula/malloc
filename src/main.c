@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 09:02:25 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/06 09:16:41 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,18 @@ t_node *add_node(t_node *start)
 
 int	main(void)
 {
-	t_node *ptr;
-	t_node *tmp;
+	char *ptr;
+	int size;
+	int x;
 
-	ptr = (t_node*)mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-	tmp = ptr;
-	while (ptr)
+	x = -1;
+	size = getpagesize();
+	ptr = (char*)mmap(NULL, size * 5, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	while (1)
 	{
-		tmp->next = add_node(tmp);
-		ft_printf("%p\n", tmp);
-		tmp = tmp->next;
+		x++;
+		ptr[x] = 'a';
+		ft_printf("%d\n", x);
 	}
 	return (0);
 }
