@@ -12,7 +12,17 @@
 
 #ifndef MALLOC_H
 # define MALLOC_H
+
+# include <sys/mman.h>
 # include "../libft/includes/libft.h"
+
+typedef struct				s_node
+{
+	struct s_node			*next;
+	struct s_node			*prev;
+	size_t					size;
+	size_t					count;
+}							t_node;
 
 void	*malloc(size_t size);
 
