@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 11:22:20 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/06 12:52:16 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,20 @@
 typedef struct				s_node
 {
 	struct s_node			*next;
-	struct s_node			*prev;
 	int						size;
+	int						available;
 	size_t					count;
-	char					*data;
+	struct s_data			*tny;
+	struct s_data			*med;
 }							t_node;
+
+typedef struct				s_data
+{
+	struct s_data			*next;
+	int						size;
+	int						available;
+	void					*data;
+}							t_data;
 
 void	*malloc(size_t size);
 
