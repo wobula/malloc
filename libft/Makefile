@@ -6,7 +6,7 @@
 #    By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/30 12:55:46 by rschramm          #+#    #+#              #
-#    Updated: 2017/02/13 12:23:20 by rschramm         ###   ########.fr        #
+#    Updated: 2017/11/06 09:02:08 by rschramm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_putchar.c \
 	   libft/ft_putstr.c \
 	   libft/ft_fputstr.c \
+	   libft/ft_fputstr_fd.c \
 	   libft/ft_putendl.c \
 	   libft/ft_putnbr.c \
 	   libft/ft_putchar_fd.c \
@@ -74,6 +75,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_lstmap.c \
 
 PRINTF = printf/ft_printf.c \
+		 printf/parse.c \
 		printf/gather_flags.c \
 		printf/conversions.c \
 		printf/format_string.c \
@@ -96,7 +98,7 @@ EXE = test
 all: $(NAME)
 
 $(NAME):
-	@gcc -Wall -Wextra -Werror -Wno-unused-but-set-variable -c $(SRCS)
+	@gcc -Wall -Wextra -Werror -c $(SRCS)
 	@ar rc $(NAME) *.o
 	@ranlib $(NAME)
 	@echo "\033[33;32mLibft: Ready >:D"
