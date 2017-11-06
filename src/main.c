@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 13:34:36 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/06 13:43:58 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,18 @@ t_data	*allocate_data(t_data *start, int capacity, size_t node_count)
 	t_data *tmp;
 
 	tmp = start;
-	ft_printf("tny capacity: %d\n", capacity);
-	ft_printf("tny node cot: %d\n", node_count);
+	while (node_count > 0)
+	{
+		tmp->data = (void*)(tmp + 1);
+		tmp->next = (t_data*)((char*)tmp->data + tnysize);
+		node_count--;
+		capacity -= sizeof(t_data) + tnysize;
+		ft_printf("tny data    : %p\n", tmp->data);
+		ft_printf("tmp->next   : %p\n", tmp->next);
+		ft_printf("tny capacity: %d\n", capacity);
+		ft_printf("tny node cot: %d\n", node_count);
+		tmp = tmp->next;
+	}
 	return (tmp);	
 }
 
