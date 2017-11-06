@@ -1,3 +1,7 @@
+# mac files
+.*
+*.swp
+
 # Prerequisites
 *.d
 
