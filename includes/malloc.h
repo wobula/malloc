@@ -33,8 +33,7 @@ typedef struct				s_node
 typedef struct				s_data
 {
 	struct s_data			*next;
-	int						size;
-	int						available;
+	size_t					available;
 	void					*data;
 }							t_data;
 

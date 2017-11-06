@@ -27,6 +27,7 @@ t_data	*allocate_data(t_data *start, int capacity, size_t node_count, int storag
 	{
 		tmp->data = (void*)(tmp + 1);
 		tmp->next = (t_data*)((char*)tmp->data + storage_size);
+		tmp->available = 1;
 		node_count--;
 		capacity -= (sizeof(t_data) + storage_size);
 		ft_printf("tny data    : %p\n", tmp->data);
@@ -35,6 +36,7 @@ t_data	*allocate_data(t_data *start, int capacity, size_t node_count, int storag
 		ft_printf("tny node cot: %d\n", node_count);
 		tmp = tmp->next;
 	}
+	tmp->next = NULL;
 	return (tmp);	
 }
 
@@ -66,20 +68,33 @@ t_node	*get_head()
 
 void	 *malloc(size_t size)
 {
-	t_node *ptr;
+	t_node 	*ptr;
+	t_data 	*tmp;
 	
 	ft_putnbr(size);
 	ptr = get_head();
-	return (ptr);
+	if (size > tnysize)
+		tmp = ptr->med;
+	else
+		tmp = ptr->tny;
+	while (tmp)
+	{
+		if (tmp->available == 1)
+			break ;
+		tmp = tmp->next;
+	}
+	if (tmp->available == 0)
+		return (NULL);
+	return (tmp->data);
 }
 
 int		main(void)
 {
-	t_node *head;
+	void *ptr;
 
-	head = (t_node*)malloc(50);
+	ptr = malloc(50);
 	ft_printf("head node: %p\n", head);
 	ft_printf("available: %d\n", head->available);
-	ft_printf("tny node : %p\n", head->tny);
+	ft_printf("tny node : %p\n", ptr);
 	return (0);
 }
