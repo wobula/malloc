@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 11:25:33 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/06 11:32:59 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_node	*add_node(t_node *this)
 {
 	t_node *ptr;
 
-	ptr = (t_node*)(((char*)(this + 1)) + data_size);
+	ptr = (t_node*)(this->data + data_size);
 	ptr->data = (char*)(ptr + 1);
 	ptr->size = this->size - sizeof(t_node) - data_size;
 	ptr->count = this->count + 1;
