@@ -71,13 +71,14 @@ void	 *malloc(size_t size)
 	t_node 	*ptr;
 	t_data 	*tmp;
 	
-	ft_putnbr(size);
 	ptr = get_head();
-	if (size > tnysize)
+	if (size <= tnysize)
+		tmp = ptr->tny;
+	else if (size <= medsize)
 		tmp = ptr->med;
 	else
-		tmp = ptr->tny;
-	while (tmp)
+		return (NULL);
+	while (tmp->next)
 	{
 		if (tmp->available == 1)
 			break ;
@@ -91,10 +92,13 @@ void	 *malloc(size_t size)
 int		main(void)
 {
 	void *ptr;
+	void *ptr2;
 
-	ptr = malloc(50);
+	ptr = malloc(101);
+	ptr2 = malloc(50);
 	ft_printf("head node: %p\n", head);
 	ft_printf("available: %d\n", head->available);
-	ft_printf("tny node : %p\n", ptr);
+	ft_printf("med malloc : %p\n", ptr);
+	ft_printf("tny malloc : %p\n", ptr2);
 	return (0);
 }
