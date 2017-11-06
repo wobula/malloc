@@ -19,13 +19,15 @@ CC = gcc
 FLAG += -Wall -Werror -Wextra
 
 SRC = src/main.c \
+		src/allocate_node.c \
+		src/malloc.c \
 
 LIBFT = libft/libftprintf.a \
 
 all: $(NAME)
 
 $(NAME):
-	@gcc $(FLAG) -o $(NAME) ./src/main.c ./libft/libftprintf.a
+	@gcc $(FLAG) -o $(NAME) $(SRC) $(LIBFT)
 	@echo "\033[33;32mSystem Ready >:D"
 
 clean:

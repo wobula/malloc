@@ -16,6 +16,10 @@
 # include <sys/mman.h>
 # include "../libft/includes/libft.h"
 
+# define tnysize 100
+# define medsize 500
+
+// Head Nodes
 typedef struct				s_node
 {
 	struct s_node			*next;
@@ -30,13 +34,21 @@ typedef struct				s_node
 	int						med_size;
 }							t_node;
 
+// Malloc Request Nodes
 typedef struct				s_data
 {
 	struct s_data			*next;
 	size_t					available;
+	size_t					id;
 	void					*data;
 }							t_data;
 
+// Primaries
 void	*malloc(size_t size);
+
+// Hepers
+t_data	*allocate_data(t_data *start, int capacity, size_t node_count, int storage_size);
+t_node	*get_head();
+
 
 #endif

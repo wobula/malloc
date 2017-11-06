@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,22 +12,27 @@
 
 #include "../includes/malloc.h"
 
-int		main(void)
+void	 *malloc(size_t size)
 {
-	void *ptr;
-	void *ptr2;
-	int x;
+	t_node 	*ptr;
+	t_data 	*tmp;
 
-	x = -1;
-	while (++x < 999)
+	ptr = get_head();
+	if (size <= tnysize)
+		tmp = ptr->tny;
+	else if (size <= medsize)
+		tmp = ptr->med;
+	else
+		return (NULL);
+	while (tmp->next)
 	{
-		ptr = malloc(50);
-		ptr2 = malloc(200);
-		if (!ptr || !ptr2)
-			break;
-		ft_printf("med malloc : %p\n", ptr);
-		ft_printf("tny malloc : %p\n", ptr2);
-		ft_printf("%d\n\n", x);
+		if (tmp->available == 1)
+		{
+			tmp->available = 0;
+			ft_printf("id: %d\n", tmp->id);
+			return (tmp->data);
+		}
+		tmp = tmp->next;
 	}
-	return (0);
+	return (NULL);
 }
