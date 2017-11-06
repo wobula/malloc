@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 10:58:25 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/06 11:08:58 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int	main(void)
 	ptr->next = NULL;
 	ptr->count = 1;
 	tmp = ptr;
-	while (tmp->size - sizeof(t_node) > 0)
+	while ((tmp->size - ((int)sizeof(t_node))) > 0)
 	{
+		ft_printf("leftover space: %d\n", tmp->size);
 		tmp->next = add_node(tmp);
-		ft_printf("leftover space: %d\n", tmp->next->size);
-		ft_printf("node address: %p\n", tmp->next);
-		ft_printf("node count: %d\n", tmp->next->count);
-		ft_printf("size of t_node: %d\n", sizeof(t_node));
+		ft_printf("node address: %p\n", tmp);
+		ft_printf("node count: %d\n", tmp->count);
+		ft_printf("size of t_node: %d\n\n", sizeof(t_node));
 		tmp = tmp->next;
 	}
 	return (0);
