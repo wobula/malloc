@@ -56,7 +56,7 @@ int		check_little_nodes(t_malloc *help, void *this)
 	return (0);
 }
 
-int 	free_little_node(t_malloc *find, void *this)
+int		free_little_node(t_malloc *find, void *this)
 {
 	while (find->tmp->next)
 	{
