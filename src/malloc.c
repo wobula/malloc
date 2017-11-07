@@ -34,13 +34,13 @@ void	*find_small_node(t_malloc *find, size_t size)
 {
 	while (find->ptr)
 	{
-		if (size <= tnysize && find->ptr->tny_allocations > 0)
+		if (size <= TNYSIZE && find->ptr->tny_allocations > 0)
 		{
 			find->tmp = find->ptr->tny;
 			find->allocations = &find->ptr->tny_allocations;
 			break ;
 		}
-		else if (size <= medsize && find->ptr->med_allocations > 0)
+		else if (size <= MEDSIZE && find->ptr->med_allocations > 0)
 		{
 			find->tmp = find->ptr->med;
 			find->allocations = &find->ptr->med_allocations;
@@ -98,7 +98,7 @@ void	*malloc(size_t size)
 
 	find.tmp = NULL;
 	find.ptr = get_head();
-	if (size <= medsize)
+	if (size <= MEDSIZE)
 		return (find_small_node(&find, size));
 	else
 		return (find_big_node(&find, size));

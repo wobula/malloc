@@ -16,50 +16,50 @@
 # include <sys/mman.h>
 # include "../libft/includes/libft.h"
 
-# define tnysize 100
-# define medsize 500
+# define TNYSIZE 100
+# define MEDSIZE 500
 
 // Head Nodes
-typedef struct				s_node
+typedef struct		s_node
 {
-	struct s_node			*next;
-	size_t					count;
-	struct s_data			*tny;
-	struct s_data			*tny_end;
-	size_t 					tny_allocations;
-	int						tny_size;
-	struct s_data			*med;
-	struct s_data			*med_end;
-	size_t 					med_allocations;
-	int						med_size;
-	struct s_data			*large;
-}							t_node;
+	struct s_node	*next;
+	size_t			count;
+	struct s_data	*tny;
+	struct s_data	*tny_end;
+	size_t			tny_allocations;
+	int				tny_size;
+	struct s_data	*med;
+	struct s_data	*med_end;
+	size_t			med_allocations;
+	int				med_size;
+	struct s_data	*large;
+}					t_node;
 
 // Malloc Request Nodes
-typedef struct				s_data
+typedef struct		s_data
 {
-	struct s_data			*next;
-	size_t					available;
-	size_t					size;
-	void					*data;
-}							t_data;
+	struct s_data	*next;
+	size_t			available;
+	size_t			size;
+	void			*data;
+}					t_data;
 
 // Malloc Utility Struct
-typedef struct 				s_malloc
+typedef struct		s_malloc
 {
-	t_node 					*ptr;
-	t_data 					*tmp;
-	size_t  				*allocations;
-}							t_malloc;
+	t_node			*ptr;
+	t_data			*tmp;
+	size_t			*allocations;
+}					t_malloc;
 
 // Primaries
-void	*malloc(size_t size);
-void	free(void *ptr);
+void				*malloc(size_t size);
+void				*realloc(void *ptr, size_t size);
+void				free(void *ptr);
 
-// Hepers
-t_data	*allocate_data(t_data *start, size_t node_count, int storage_size);
-t_node	*get_head();
-t_node 	*expand_head();
-
+// Helpers
+t_data				*allocate_data(t_data *start, size_t count, int size);
+t_node				*get_head();
+t_node				*expand_head();
 
 #endif

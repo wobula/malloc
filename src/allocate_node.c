@@ -38,8 +38,8 @@ t_node	*expand_head(void)
 	t_node	*ptr;
 
 	get_size = sizeof(t_node) +
-					((tnysize + sizeof(t_data)) * 100) +
-					((medsize + sizeof(t_data)) * 100);
+					((TNYSIZE + sizeof(t_data)) * 100) +
+					((MEDSIZE + sizeof(t_data)) * 100);
 	data = 0;
 	while (data < get_size)
 		data = data + getpagesize();
@@ -47,12 +47,12 @@ t_node	*expand_head(void)
 		MAP_ANON | MAP_PRIVATE, -1, 0);
 	ptr->tny_allocations = 100;
 	ptr->tny = (t_data*)(ptr + 1);
-	ptr->tny_size = (sizeof(t_data) + tnysize) * 100;
-	ptr->tny_end = allocate_data(ptr->tny, 100, tnysize);
+	ptr->tny_size = (sizeof(t_data) + TNYSIZE) * 100;
+	ptr->tny_end = allocate_data(ptr->tny, 100, TNYSIZE);
 	ptr->med_allocations = 100;
-	ptr->med = (t_data*)(((char*)(ptr->tny_end + 1)) + tnysize);
-	ptr->med_size = (sizeof(t_data) + medsize) * 100;
-	ptr->med_end = allocate_data(ptr->med, 100, medsize);
+	ptr->med = (t_data*)(((char*)(ptr->tny_end + 1)) + TNYSIZE);
+	ptr->med_size = (sizeof(t_data) + MEDSIZE) * 100;
+	ptr->med_end = allocate_data(ptr->med, 100, MEDSIZE);
 	ptr->large = NULL;
 	ptr->next = NULL;
 	return (ptr);
