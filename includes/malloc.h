@@ -40,6 +40,7 @@ typedef struct				s_data
 {
 	struct s_data			*next;
 	size_t					available;
+	size_t					size;
 	void					*data;
 }							t_data;
 

@@ -53,17 +53,22 @@ void	*find_small_node(t_malloc *find, size_t size)
 	return (allocate_found_node(find));
 }
 
-void	*allocate_big_node(size_t size)
+t_data	*allocate_big_node(size_t size)
 {
-	t_data *this;
+	t_data 	*this;
+	int		get_data;
 
-	this = mmap(NULL, size + sizeof(t_data),
+	get_data = getpagesize();
+	while ((int)(size + sizeof(t_data)) > get_data)
+		get_data += getpagesize();
+	this = mmap(NULL, get_data,
 		PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-	this->available = 0;
+	this->size = get_data;
 	this->next = NULL;
 	this->data = this + 1;
-	ft_printf("Allocated %d to address %p\n", size, this->data);
-	return (this->data);
+	ft_printf("Allocated %d to address :%p\n", this->size, this);
+	ft_printf("Data address for pointer:%p\n", this->data);
+	return (this);
 }
 
 void	*find_big_node(t_malloc *find, size_t size)
@@ -82,8 +87,6 @@ void	*find_big_node(t_malloc *find, size_t size)
 		while (this->next && this->available == 0)
 			this = this->next;
 		this->next = allocate_big_node(size);
-		ft_printf("allocated %d bytes to address %p\n",
-			size + sizeof(t_data), this->next);
 		return (this->next->data);
 	}
 	return (NULL);

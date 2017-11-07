@@ -15,20 +15,26 @@
 int		check_big_nodes(t_node *check, void *ptr)
 {
 	t_data *tmp;
+	t_data *prev;
 
 	if (!check->large)
 		return (0);
 	tmp = check->large;
+	prev = NULL;
 	while (tmp->next)
 	{
-		if (tmp->data == ptr && tmp->available == 0)
+		if (tmp->data == ptr)
 			break ;
+		prev = tmp;
 		tmp = tmp->next;
 	}
 	if (tmp->data == ptr)
 	{
-		tmp->available = 1;
-		ft_printf("Freed pointer at address %p\n", tmp->data);
+		if (prev)
+			prev->next = tmp->next;
+		munmap(&tmp, tmp->size);
+		ft_printf("address range has %d size\n", tmp->size);
+		ft_printf("Freed pointer at node address %p\n", tmp);
 		return (1);
 	}
 	return (0);
@@ -40,7 +46,6 @@ void	 free(void *ptr)
 	t_data *find;
 	size_t *allocations;
 
-	ft_printf("freeing ptr address: %p\n", ptr);
 	tmp = get_head();
 	if (check_big_nodes(tmp, ptr))
 		return ;
