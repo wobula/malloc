@@ -12,12 +12,6 @@
 
 #include "../includes/libft.h"
 
-/*
-** Our first data structure tracks 3 things: va_arg pointer,
-** format pointer, and return value (printf returns the number 
-** of characters printed).
-*/
-
 int			ft_dprintf(int fd, const char *format, ...)
 {
 	t_print all;

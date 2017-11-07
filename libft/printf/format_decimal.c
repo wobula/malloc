@@ -12,7 +12,7 @@
 
 #include "../includes/libft.h"
 
-static void get_sign(t_spec *this, t_format *form)
+static void	get_sign(t_spec *this, t_format *form)
 {
 	if (this->data.super < 0)
 	{
@@ -30,7 +30,8 @@ static void	constructor(t_spec *this, t_format *form)
 {
 	form->sign = 0;
 	get_sign(this, form);
-	form->print = ft_ptf_itoabase((uintmax_t)this->data.super, 10, this->alt_form);
+	form->print = ft_ptf_itoabase((uintmax_t)this->data.super, 10,
+		this->alt_form);
 	form->length = ft_strlen(form->print);
 	form->zeroes = 0;
 	form->spaces = 0;
@@ -42,7 +43,7 @@ static void	constructor(t_spec *this, t_format *form)
 		form->spaces += this->width - (form->length + form->zeroes);
 }
 
-static void print_character(t_spec *this, char c, int times)
+static void	print_character(t_spec *this, char c, int times)
 {
 	while (times > 0)
 	{
@@ -52,7 +53,7 @@ static void print_character(t_spec *this, char c, int times)
 	}
 }
 
-static void print_width(t_spec *this, t_format *form)
+static void	print_width(t_spec *this, t_format *form)
 {
 	if (this->prepend_zero == true)
 	{

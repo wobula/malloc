@@ -31,7 +31,7 @@ static void	print_char(char output, int *ret, int fd)
 	*ret = *ret + 1;
 }
 
-void	format_char(t_print *ptr, t_spec *this)
+void		format_char(t_print *ptr, t_spec *this)
 {
 	this->data.chr = (char)va_arg(ptr->arg, int);
 	this->len = 1;

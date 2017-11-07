@@ -39,6 +39,17 @@ static void	constructor(t_spec *this, t_format *form)
 		form->spaces = this->width - (form->length + form->zeroes);
 }
 
+void		left_align_norm(t_spec *this, t_format *form)
+{
+	if (this->alt_form == true)
+		ft_fputstr_fd("0x", *this->fd);
+	print_character(this, '0', form->zeroes);
+	ft_fputstr_fd(form->print, *this->fd);
+	if (form->spaces > 0)
+		print_character(this, ' ', form->spaces);
+	*this->ret = *this->ret + form->length;
+}
+
 void		format_hex(t_print *ptr, t_spec *this)
 {
 	t_format form;
@@ -58,13 +69,5 @@ void		format_hex(t_print *ptr, t_spec *this)
 		*this->ret = *this->ret + form.length;
 	}
 	else
-	{
-		if (this->alt_form == true)
-			ft_fputstr_fd("0x", *this->fd);
-		print_character(this, '0', form.zeroes);
-		ft_fputstr_fd(form.print, *this->fd);
-		if (form.spaces > 0)
-			print_character(this, ' ', form.spaces);
-		*this->ret = *this->ret + form.length;
-	}
+		left_align_norm(this, &form);
 }
