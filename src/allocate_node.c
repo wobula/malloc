@@ -40,28 +40,34 @@ t_data	*allocate_data(t_data *start, int capacity, size_t node_count, int storag
 	return (tmp);	
 }
 
-t_node	*get_head()
+t_node *expand_head()
 {
 	int get_size;
 	int data;
+	t_node *ptr;
 
-	if (!head)
-	{
-		get_size = sizeof(t_node) +
+	get_size = sizeof(t_node) +
 					((tnysize + sizeof(t_data)) * 100) +
 					((medsize + sizeof(t_data)) * 100);
-		data = 0;
-		while (data < get_size)
-			data = data + getpagesize();
-		head = mmap(NULL, data, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-		head->tny = (t_data*)(head + 1);
-		head->tny_size = (sizeof(t_data) + tnysize) * 100;
-		head->tny_end = allocate_data(head->tny, head->tny_size, 100, tnysize);
-		head->tny->id = 0;
-		head->med = (t_data*)(((char*)(head->tny_end + 1)) + tnysize);
-		head->med_size = (sizeof(t_data) + medsize) * 100;
-		head->med_end = allocate_data(head->med, head->med_size, 100, medsize);
-		head->med->id = 0;
-	}
+	data = 0;
+	while (data < get_size)
+		data = data + getpagesize();
+	ptr = mmap(NULL, data, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	ptr->tny = (t_data*)(ptr + 1);
+	ptr->tny_size = (sizeof(t_data) + tnysize) * 100;
+	ptr->tny_end = allocate_data(ptr->tny, ptr->tny_size, 100, tnysize);
+	ptr->tny->id = 0;
+	ptr->med = (t_data*)(((char*)(ptr->tny_end + 1)) + tnysize);
+	ptr->med_size = (sizeof(t_data) + medsize) * 100;
+	ptr->med_end = allocate_data(ptr->med, ptr->med_size, 100, medsize);
+	ptr->med->id = 0;
+	ptr->next = NULL;
+	return (ptr);
+}
+
+t_node	*get_head()
+{
+	if (!head)
+		head = expand_head();
 	return(head);
 }
