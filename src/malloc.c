@@ -55,7 +55,7 @@ void	*find_small_node(t_malloc *find, size_t size)
 
 t_data	*allocate_big_node(size_t size)
 {
-	t_data 	*this;
+	t_data	*this;
 	int		get_data;
 
 	get_data = getpagesize();
