@@ -52,7 +52,7 @@ typedef struct				s_spec
 	int						*ret;
 	int						*fd;
 	va_list					*arg;
-	t_raw						data;
+	t_raw					data;
 }							t_spec;
 
 typedef struct				s_format

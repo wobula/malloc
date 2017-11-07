@@ -19,7 +19,6 @@
 # define TNYSIZE 100
 # define MEDSIZE 500
 
-// Head Nodes
 typedef struct		s_node
 {
 	struct s_node	*next;
@@ -35,7 +34,6 @@ typedef struct		s_node
 	struct s_data	*large;
 }					t_node;
 
-// Malloc Request Nodes
 typedef struct		s_data
 {
 	struct s_data	*next;
@@ -44,7 +42,6 @@ typedef struct		s_data
 	void			*data;
 }					t_data;
 
-// Malloc Utility Struct
 typedef struct		s_malloc
 {
 	t_node			*ptr;
@@ -52,12 +49,10 @@ typedef struct		s_malloc
 	size_t			*allocations;
 }					t_malloc;
 
-// Primaries
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
 void				free(void *ptr);
 
-// Helpers
 t_data				*allocate_data(t_data *start, size_t count, int size);
 t_node				*get_head();
 t_node				*expand_head();
