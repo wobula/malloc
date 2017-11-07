@@ -40,6 +40,23 @@ int		check_big_nodes(t_node *check, void *ptr)
 	return (0);
 }
 
+int		check_little_nodes(t_malloc *help, void *this)
+{
+	if (this < (void*)help->ptr->tny_end)
+	{
+		help->tmp = help->ptr->tny;
+		help->allocations = &help->ptr->tny_allocations;
+		return (1);
+	}
+	else if (this < (void*)help->ptr->med_end)
+	{
+		help->tmp = help->ptr->med;
+		help->allocations = &help->ptr->med_allocations;
+		return (1);
+	}
+	return (0);
+}
+
 void	 free(void *this)
 {
 	t_malloc help;
@@ -47,21 +64,8 @@ void	 free(void *this)
 	help.ptr = get_head();
 	if (check_big_nodes(help.ptr, this))
 		return ;
-	if (this < (void*)help.ptr->tny_end)
-	{
-		help.tmp = help.ptr->tny;
-		help.allocations = &help.ptr->tny_allocations;
-	}
-	else if (this < (void*)help.ptr->med_end)
-	{
-		help.tmp = help.ptr->med;
-		help.allocations = &help.ptr->med_allocations;
-	}
-	else
-	{
+	if (!check_little_nodes(&help, this))
 		ft_printf("Pointer being freed was not allocated\n");
-		return ;
-	}
 	while (help.tmp->next)
 	{
 		if (help.tmp->data == this)
