@@ -63,6 +63,7 @@ t_node *expand_head()
 	ptr->med_size = (sizeof(t_data) + medsize) * 100;
 	ptr->med_end = allocate_data(ptr->med, ptr->med_size, 100, medsize);
 	ptr->med->id = 0;
+	ptr->large = NULL;
 	ptr->next = NULL;
 	return (ptr);
 }

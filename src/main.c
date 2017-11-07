@@ -14,14 +14,15 @@
 
 int		main(void)
 {
+	char 	*ptr;
 	char 	*ptr2;
-	int x;
+	int 	x;
 
 	x = -1;
-	while (x++ < 999999)
+	while (1)
 	{
-		ft_printf("allocation #%d\n", x);
-		ptr2 = (char*)malloc(500);
+		ptr2 = (char*)malloc(9000);
+		ptr = (char*)malloc(990000);
 	}
 	return (0);
 }

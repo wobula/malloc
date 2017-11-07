@@ -57,6 +57,41 @@ void	*find_small_node(t_malloc *find, size_t size)
 	return (allocate_found_node(find)->data);
 }
 
+void	*find_big_node(t_malloc *find, size_t size)
+{
+	t_data *this;
+
+	if (!find->ptr->large)
+	{
+		this = mmap(NULL, size + sizeof(t_data), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+		this->available = 0;
+		this->next = NULL;
+		find->ptr->large = this;
+		this->data = this + 1;
+		ft_printf("Allocated %d to address %p\n", size, this->data);
+		return (this->data);
+	}
+	else
+	{
+		ft_putstr("inside other part \n");
+		this = find->ptr->large;
+		while (this->next && this->available == 0)
+			this = this->next;
+		if (this->available == 1)
+		{
+			this->available = 0;
+			return (this->data);
+		}
+		this->next = mmap(NULL, size + sizeof(t_data), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+		this->next->available = 0;
+		this->next->next = NULL;
+		this->data = this + 1;
+		ft_printf("allocated %d bytes to address %p\n", size + sizeof(t_data), this->next);
+		return (this->data);
+	}
+	return (NULL);
+}
+
 void	 *malloc(size_t size)
 {
 	t_malloc find;
@@ -65,7 +100,7 @@ void	 *malloc(size_t size)
 	find.ptr = get_head();
 	if (size <= medsize)
 		return (find_small_node(&find, size));
-	//else
-	//	return (find_big_node(&find, size));
+	else
+		return (find_big_node(&find, size));
 	return (NULL);
 }
