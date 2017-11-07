@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-void	*find_free_node(t_malloc *find, size_t size)
+void	find_or_expand(t_malloc *find, size_t size)
 {
 	while (find->ptr)
 	{
@@ -32,6 +32,10 @@ void	*find_free_node(t_malloc *find, size_t size)
 			find->ptr->next = expand_head();
 		find->ptr = find->ptr->next;
 	}
+}
+
+t_data 	*allocate_found_node(t_malloc *find)
+{
 	while (find->tmp->next)
 	{
 		if (find->tmp->available == 1)
@@ -40,12 +44,17 @@ void	*find_free_node(t_malloc *find, size_t size)
 			*find->allocations = *find->allocations - 1;
 			ft_printf("Malloc: you have %d allocations leftover\n", *find->allocations);
 			ft_printf("Malloc: Using free pointer address %p\n", find->tmp);
-			//ft_printf("id: %d\n", tmp->id);
-			return (find->tmp->data);
+			break ;
 		}
 		find->tmp = find->tmp->next;
 	}
-	return (NULL);
+	return (find->tmp->data);
+}
+
+void	*find_small_node(t_malloc *find, size_t size)
+{
+	find_or_expand(find, size);
+	return (allocate_found_node(find)->data);
 }
 
 void	 *malloc(size_t size)
@@ -54,6 +63,9 @@ void	 *malloc(size_t size)
 
 	find.tmp = NULL;
 	find.ptr = get_head();
-	return (find_free_node(&find, size));
+	if (size <= medsize)
+		return (find_small_node(&find, size));
+	//else
+	//	return (find_big_node(&find, size));
 	return (NULL);
 }
