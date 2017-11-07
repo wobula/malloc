@@ -32,6 +32,7 @@ typedef struct				s_node
 	struct s_data			*med_end;
 	size_t 					med_allocations;
 	int						med_size;
+	struct s_data			*large;
 }							t_node;
 
 // Malloc Request Nodes
