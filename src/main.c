@@ -16,13 +16,11 @@ int		main(void)
 {
 	char 	*ptr;
 	char 	*ptr2;
-	int 	x;
 
-	x = -1;
-	while (1)
-	{
-		ptr2 = (char*)malloc(9000);
-		ptr = (char*)malloc(990000);
-	}
+	ptr2 = (char*)malloc(90);
+	ft_printf("%p\n", ptr2);
+	ptr = (char*)malloc(990000);
+	ft_printf("%p\n", ptr2);
+	free(ptr2);
 	return (0);
 }

@@ -54,7 +54,7 @@ t_data 	*allocate_found_node(t_malloc *find)
 void	*find_small_node(t_malloc *find, size_t size)
 {
 	find_or_expand(find, size);
-	return (allocate_found_node(find)->data);
+	return (allocate_found_node(find));
 }
 
 void	*find_big_node(t_malloc *find, size_t size)
