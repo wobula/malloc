@@ -12,30 +12,35 @@
 
 #include "../includes/malloc.h"
 
+void	find_free_node(t_malloc *find, size_t size)
+{
+	while (find->ptr)
+	{
+		if (size <= tnysize && find->ptr->tny_allocations > 0)
+		{
+			find->tmp = find->ptr->tny;
+			find->allocations = &find->ptr->tny_allocations;
+			break ;
+		}
+		else if (size <= medsize && find->ptr->med_allocations > 0)
+		{
+			find->tmp = find->ptr->med;
+			find->allocations = &find->ptr->med_allocations;
+			break ;
+		}
+		if (!find->ptr->next)
+			find->ptr->next = expand_head();
+		find->ptr = find->ptr->next;
+	}
+}
+
 void	 *malloc(size_t size)
 {
 	t_malloc find;
 
 	find.tmp = NULL;
 	find.ptr = get_head();
-	while (find.ptr)
-	{
-		if (size <= tnysize && find.ptr->tny_allocations > 0)
-		{
-			find.tmp = find.ptr->tny;
-			find.allocations = &find.ptr->tny_allocations;
-			break ;
-		}
-		else if (size <= medsize && find.ptr->med_allocations > 0)
-		{
-			find.tmp = find.ptr->med;
-			find.allocations = &find.ptr->med_allocations;
-			break ;
-		}
-		if (!find.ptr->next)
-			find.ptr->next = expand_head();
-		find.ptr = find.ptr->next;
-	}
+	find_free_node(&find, size);
 	if (!find.tmp)
 	{
 		ft_printf("Your pointer was");
