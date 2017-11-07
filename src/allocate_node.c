@@ -53,10 +53,12 @@ t_node *expand_head()
 	while (data < get_size)
 		data = data + getpagesize();
 	ptr = mmap(NULL, data, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	ptr->tny_allocations = 100;
 	ptr->tny = (t_data*)(ptr + 1);
 	ptr->tny_size = (sizeof(t_data) + tnysize) * 100;
 	ptr->tny_end = allocate_data(ptr->tny, ptr->tny_size, 100, tnysize);
 	ptr->tny->id = 0;
+	ptr->med_allocations = 100;
 	ptr->med = (t_data*)(((char*)(ptr->tny_end + 1)) + tnysize);
 	ptr->med_size = (sizeof(t_data) + medsize) * 100;
 	ptr->med_end = allocate_data(ptr->med, ptr->med_size, 100, medsize);

@@ -23,14 +23,14 @@
 typedef struct				s_node
 {
 	struct s_node			*next;
-	int						size;
-	int						available;
 	size_t					count;
 	struct s_data			*tny;
 	struct s_data			*tny_end;
+	size_t 					tny_allocations;
 	int						tny_size;
 	struct s_data			*med;
 	struct s_data			*med_end;
+	size_t 					med_allocations;
 	int						med_size;
 }							t_node;
 
@@ -49,6 +49,7 @@ void	*malloc(size_t size);
 // Hepers
 t_data	*allocate_data(t_data *start, int capacity, size_t node_count, int storage_size);
 t_node	*get_head();
+t_node 	*expand_head();
 
 
 #endif

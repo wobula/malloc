@@ -16,13 +16,20 @@ void	 free(void *ptr)
 {
 	t_node *tmp;
 	t_data *find;
+	size_t *allocations;
 
 	ft_printf("freeing ptr address: %p\n", ptr);
 	tmp = get_head();
 	if (ptr < (void*)tmp->tny_end)
+	{
 		find = tmp->tny;
+		allocations = &tmp->tny_allocations;
+	}
 	else if (ptr < (void*)tmp->med_end)
+	{
 		find = tmp->med;
+		allocations = &tmp->med_allocations;
+	}
 	else
 	{
 		ft_printf("Pointer being freed was not allocated\n");
@@ -36,6 +43,7 @@ void	 free(void *ptr)
 			if (find->available == 0)
 			{
 				find->available = 1;
+				*allocations = *allocations + 1;
 				ft_printf("Pointer freed at address %p\n", find->data);
 			}
 			else

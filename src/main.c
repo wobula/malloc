@@ -14,17 +14,14 @@
 
 int		main(void)
 {
-	t_node *ptr;
 	char 	*ptr2;
 	int x;
 
-	ptr = (t_node*)malloc(50);
-	free((void*)ptr);
-	ptr2 = (char*)malloc(101);
 	x = -1;
-	while (++x < 101)
-		ptr2[x] = 'A';
-	ft_printf("%s\n", ptr2);
-	free(ptr2);
+	while (x++ < 999999)
+	{
+		ft_printf("allocation #%d\n", x);
+		ptr2 = (char*)malloc(500);
+	}
 	return (0);
 }
