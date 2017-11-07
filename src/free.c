@@ -42,43 +42,41 @@ int		check_big_nodes(t_node *check, void *ptr)
 
 void	 free(void *this)
 {
-	t_node *ptr;
-	t_data *tmp;
-	size_t *allocations;
+	t_malloc help;
 
-	ptr = get_head();
-	if (check_big_nodes(ptr, this))
+	help.ptr = get_head();
+	if (check_big_nodes(help.ptr, this))
 		return ;
-	if (this < (void*)ptr->tny_end)
+	if (this < (void*)help.ptr->tny_end)
 	{
-		tmp = ptr->tny;
-		allocations = &ptr->tny_allocations;
+		help.tmp = help.ptr->tny;
+		help.allocations = &help.ptr->tny_allocations;
 	}
-	else if (this < (void*)ptr->med_end)
+	else if (this < (void*)help.ptr->med_end)
 	{
-		tmp = ptr->med;
-		allocations = &ptr->med_allocations;
+		help.tmp = help.ptr->med;
+		help.allocations = &help.ptr->med_allocations;
 	}
 	else
 	{
 		ft_printf("Pointer being freed was not allocated\n");
 		return ;
 	}
-	while (tmp->next)
+	while (help.tmp->next)
 	{
-		if (tmp->data == this)
+		if (help.tmp->data == this)
 		{
-			ft_printf("Pointer found at address %p\n", tmp->data);
-			if (tmp->available == 0)
+			ft_printf("Pointer found at address %p\n", help.tmp->data);
+			if (help.tmp->available == 0)
 			{
-				tmp->available = 1;
-				*allocations = *allocations + 1;
-				ft_printf("Pointer freed at address %p\n", tmp->data);
+				help.tmp->available = 1;
+				*help.allocations = *help.allocations + 1;
+				ft_printf("Pointer freed at address %p\n", help.tmp->data);
 			}
 			else
 				ft_printf("Pointer found is already freed\n");
 			break ;
 		}
-		tmp = tmp->next;
+		help.tmp = help.tmp->next;
 	}
 }
