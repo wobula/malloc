@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-t_node	*head = NULL;
+t_node	*g_head = NULL;
 
 t_data	*allocate_data(t_data *start, size_t node_count, int storage_size)
 {
@@ -28,20 +28,21 @@ t_data	*allocate_data(t_data *start, size_t node_count, int storage_size)
 		tmp = tmp->next;
 	}
 	tmp->next = NULL;
-	return (tmp);	
+	return (tmp);
 }
 
-t_node *expand_head()
+t_node	*expand_head(void)
 {
-	int get_size;
-	int data;
-	t_node *ptr;
+	int		get_size;
+	int		data;
+	t_node	*ptr;
 
 	get_size = sizeof(t_node) +
 					((tnysize + sizeof(t_data)) * 100) +
 					((medsize + sizeof(t_data)) * 100);
 	data = 0;
-	while (data < get_size) data = data + getpagesize();
+	while (data < get_size)
+		data = data + getpagesize();
 	ptr = mmap(NULL, data, PROT_READ | PROT_WRITE,
 		MAP_ANON | MAP_PRIVATE, -1, 0);
 	ptr->tny_allocations = 100;
@@ -57,9 +58,9 @@ t_node *expand_head()
 	return (ptr);
 }
 
-t_node	*get_head()
+t_node	*get_head(void)
 {
-	if (!head)
-		head = expand_head();
-	return(head);
+	if (!g_head)
+		g_head = expand_head();
+	return (g_head);
 }
