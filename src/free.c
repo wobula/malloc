@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,19 +12,36 @@
 
 #include "../includes/malloc.h"
 
-int		main(void)
+void	 free(void *ptr)
 {
-	t_node *ptr;
-	char 	*ptr2;
-	int x;
+	t_node *tmp;
+	t_data *find;
 
-	ptr = (t_node*)malloc(50);
-	free((void*)ptr);
-	ptr2 = (char*)malloc(101);
-	x = -1;
-	while (++x < 101)
-		ptr2[x] = 'A';
-	ft_printf("%s\n", ptr2);
-	free(ptr2);
-	return (0);
+	ft_printf("freeing ptr address: %p\n", ptr);
+	tmp = get_head();
+	if (ptr < (void*)tmp->tny_end)
+		find = tmp->tny;
+	else if (ptr < (void*)tmp->med_end)
+		find = tmp->med;
+	else
+	{
+		ft_printf("Pointer being freed was not allocated\n");
+		return ;
+	}
+	while (find->next)
+	{
+		if (find->data == ptr)
+		{
+			ft_printf("Pointer found at address %p\n", find->data);
+			if (find->available == 0)
+			{
+				find->available = 1;
+				ft_printf("Pointer freed at address %p\n", find->data);
+			}
+			else
+				ft_printf("Pointer found is already freed\n");
+			break ;
+		}
+		find = find->next;
+	}
 }

@@ -26,13 +26,14 @@ t_data	*allocate_data(t_data *start, int capacity, size_t node_count, int storag
 		tmp->data = (void*)(tmp + 1);
 		tmp->next = (t_data*)((char*)tmp->data + storage_size);
 		tmp->available = 1;
-		tmp->id += 1;
+		id++;
+		tmp->id = id;
 		node_count--;
 		capacity -= (sizeof(t_data) + storage_size);
-		ft_printf("tny data    : %p\n", tmp->data);
-		ft_printf("tmp->next   : %p\n", tmp->next);
-		ft_printf("tny capacity: %d\n", capacity);
-		ft_printf("tny node cot: %d\n", node_count);
+		//ft_printf("tny data    : %p\n", tmp->data);
+		//ft_printf("tmp->next   : %p\n", tmp->next);
+		//ft_printf("tny capacity: %d\n", capacity);
+		//ft_printf("tny node cot: %d\n", node_count);
 		tmp = tmp->next;
 	}
 	tmp->next = NULL;
