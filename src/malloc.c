@@ -14,46 +14,44 @@
 
 void	 *malloc(size_t size)
 {
-	t_node 	*ptr;
-	t_data 	*tmp;
-	size_t  *allocations;
+	t_malloc find;
 
-	tmp = NULL;
-	ptr = get_head();
-	while (ptr)
+	find.tmp = NULL;
+	find.ptr = get_head();
+	while (find.ptr)
 	{
-		if (size <= tnysize && ptr->tny_allocations > 0)
+		if (size <= tnysize && find.ptr->tny_allocations > 0)
 		{
-			tmp = ptr->tny;
-			allocations = &ptr->tny_allocations;
+			find.tmp = find.ptr->tny;
+			find.allocations = &find.ptr->tny_allocations;
 			break ;
 		}
-		else if (size <= medsize && ptr->med_allocations > 0)
+		else if (size <= medsize && find.ptr->med_allocations > 0)
 		{
-			tmp = ptr->med;
-			allocations = &ptr->med_allocations;
+			find.tmp = find.ptr->med;
+			find.allocations = &find.ptr->med_allocations;
 			break ;
 		}
-		if (!ptr->next)
-			ptr->next = expand_head();
-		ptr = ptr->next;
+		if (!find.ptr->next)
+			find.ptr->next = expand_head();
+		find.ptr = find.ptr->next;
 	}
-	if (!tmp)
+	if (!find.tmp)
 	{
 		ft_printf("Your pointer was");
 	}
-	while (tmp->next)
+	while (find.tmp->next)
 	{
-		if (tmp->available == 1)
+		if (find.tmp->available == 1)
 		{
-			tmp->available = 0;
-			*allocations = *allocations - 1;
-			ft_printf("Malloc: you have %d allocations leftover\n", *allocations);
-			ft_printf("Malloc: Using free pointer address %p\n", tmp);
+			find.tmp->available = 0;
+			*find.allocations = *find.allocations - 1;
+			ft_printf("Malloc: you have %d allocations leftover\n", *find.allocations);
+			ft_printf("Malloc: Using free pointer address %p\n", find.tmp);
 			//ft_printf("id: %d\n", tmp->id);
-			return (tmp->data);
+			return (find.tmp->data);
 		}
-		tmp = tmp->next;
+		find.tmp = find.tmp->next;
 	}
 	return (NULL);
 }

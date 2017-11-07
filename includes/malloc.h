@@ -43,6 +43,14 @@ typedef struct				s_data
 	void					*data;
 }							t_data;
 
+// Malloc Utility Struct
+typedef struct 				s_malloc
+{
+	t_node 					*ptr;
+	t_data 					*tmp;
+	size_t  				*allocations;
+}							t_malloc;
+
 // Primaries
 void	*malloc(size_t size);
 
