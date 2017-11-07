@@ -54,6 +54,7 @@ typedef struct 				s_malloc
 
 // Primaries
 void	*malloc(size_t size);
+void	free(void *ptr);
 
 // Hepers
 t_data	*allocate_data(t_data *start, size_t node_count, int storage_size);

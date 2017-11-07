@@ -59,28 +59,28 @@ int		check_little_nodes(t_malloc *help, void *this)
 
 void	free(void *this)
 {
-	t_malloc help;
+	t_malloc find;
 
-	help.ptr = get_head();
-	if (check_big_nodes(help.ptr, this))
+	find.ptr = get_head();
+	if (check_big_nodes(find.ptr, this))
 		return ;
-	if (!check_little_nodes(&help, this))
+	if (!check_little_nodes(&find, this))
 		ft_printf("Pointer being freed was not allocated\n");
-	while (help.tmp->next)
+	while (find.tmp->next)
 	{
-		if (help.tmp->data == this)
+		if (find.tmp->data == this)
 		{
-			ft_printf("Pointer found at address %p\n", help.tmp->data);
-			if (help.tmp->available == 0)
+			ft_printf("Pointer found at address %p\n", find.tmp->data);
+			if (find.tmp->available == 0)
 			{
-				help.tmp->available = 1;
-				*help.allocations = *help.allocations + 1;
-				ft_printf("Pointer freed at address %p\n", help.tmp->data);
+				find.tmp->available = 1;
+				*find.allocations = *find.allocations + 1;
+				ft_printf("Pointer freed at address %p\n", find.tmp->data);
 			}
 			else
-				ft_printf("Pointer found is already freed\n");
+				ft_printf("Pointer found is already free\n");
 			break ;
 		}
-		help.tmp = help.tmp->next;
+		find.tmp = find.tmp->next;
 	}
 }
