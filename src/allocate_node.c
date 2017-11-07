@@ -47,7 +47,6 @@ t_node	*get_head()
 
 	if (!head)
 	{
-		ft_putstr("allocating head node\n");
 		get_size = sizeof(t_node) +
 					((tnysize + sizeof(t_data)) * 100) +
 					((medsize + sizeof(t_data)) * 100);
@@ -63,7 +62,6 @@ t_node	*get_head()
 		head->med_size = (sizeof(t_data) + medsize) * 100;
 		head->med_end = allocate_data(head->med, head->med_size, 100, medsize);
 		head->med->id = 0;
-		ft_printf("med start: %p\n", head->med);
 	}
 	return(head);
 }

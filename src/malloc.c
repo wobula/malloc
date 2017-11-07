@@ -29,8 +29,8 @@ void	 *malloc(size_t size)
 		if (tmp->available == 1)
 		{
 			tmp->available = 0;
-			ft_printf("Using free pointer address at %p\n", tmp);
-			ft_printf("id: %d\n", tmp->id);
+			ft_printf("Malloc: Using free pointer address %p\n", tmp);
+			//ft_printf("id: %d\n", tmp->id);
 			return (tmp->data);
 		}
 		tmp = tmp->next;
