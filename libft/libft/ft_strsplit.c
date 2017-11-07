@@ -71,7 +71,7 @@ static char	*ft_letters(char const *str, char delim, int letter)
 	return (ptr);
 }
 
-char	**ft_strsplit(char const *str, char delim)
+char		**ft_strsplit(char const *str, char delim)
 {
 	int letter;
 	int word;

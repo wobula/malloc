@@ -31,7 +31,7 @@ static int	ft_size(int nbr)
 
 static char	*ft_loader(char *dst, int nbr, int size)
 {
-	int sign;
+	int		sign;
 
 	if (nbr == 0 && (dst[0] = '0'))
 		return (dst);
@@ -49,7 +49,7 @@ static char	*ft_loader(char *dst, int nbr, int size)
 	return (dst);
 }
 
-char	*ft_itoa(int nbr)
+char		*ft_itoa(int nbr)
 {
 	int		size;
 	char	*ptr;
