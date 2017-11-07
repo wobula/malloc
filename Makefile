@@ -21,6 +21,7 @@ FLAG += -Wall -Werror -Wextra
 SRC = src/main.c \
 		src/allocate_node.c \
 		src/malloc.c \
+		src/realloc.c \
 		src/free.c \
 
 LIBFT = libft/libftprintf.a \

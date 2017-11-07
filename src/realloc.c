@@ -12,11 +12,16 @@
 
 #include "../includes/malloc.h"
 
-void	*realloc(void *ptr, size_t size)
+void	*realloc(void *this, size_t size)
 {
-	void *ptr;
+	t_malloc find;
 
-	ptr = NULL;
-	ft_printf("pointer at address %p requested size %d\n", ptr, size);
-	return (ptr);
+	if (!this)
+	{
+		ft_printf("found null pointer: gathering %d bytes\n", size);
+		return (malloc(size));
+	}
+	find.tmp = NULL;
+	find.ptr = get_head();
+	return (this);
 }

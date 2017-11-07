@@ -12,13 +12,14 @@
 
 #include "../includes/malloc.h"
 
-void	*allocate_found_node(t_malloc *find)
+void	*allocate_found_node(t_malloc *find, size_t size)
 {
 	while (find->tmp->next)
 	{
 		if (find->tmp->available == 1)
 		{
 			find->tmp->available = 0;
+			find->tmp->size = size;
 			*find->allocations = *find->allocations - 1;
 			ft_printf("Malloc: you have %d allocations leftover\n",
 				*find->allocations);
@@ -50,7 +51,7 @@ void	*find_small_node(t_malloc *find, size_t size)
 			find->ptr->next = expand_head();
 		find->ptr = find->ptr->next;
 	}
-	return (allocate_found_node(find));
+	return (allocate_found_node(find, size));
 }
 
 t_data	*allocate_big_node(size_t size)
