@@ -57,7 +57,7 @@ int		check_little_nodes(t_malloc *help, void *this)
 	return (0);
 }
 
-void	 free(void *this)
+void	free(void *this)
 {
 	t_malloc help;
 
