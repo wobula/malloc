@@ -15,9 +15,13 @@
 int		main(void)
 {
 	char	*ptr;
+	char 	*ptr2;
+	char 	*ptr3;
 	int		x;
 
 	ptr = malloc(10);
+	ptr2 = malloc(101);
+	ptr3 = malloc(10000);
 	x = -1;
 	while (++x < 9)
 		ptr[x] = 'a';

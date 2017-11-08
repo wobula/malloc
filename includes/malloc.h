@@ -49,6 +49,8 @@ typedef struct		s_alloc
 	t_data			*inside;
 	t_data			*prev;
 	size_t			*allocations;
+	uintmax_t		current_total;
+	uintmax_t		total;
 }					t_alloc;
 
 void				*malloc(size_t size);
