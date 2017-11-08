@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-void	*allocate_found_node(t_malloc *find, size_t size)
+static void		*allocate_found_node(t_malloc *find, size_t size)
 {
 	while (find->tmp->next)
 	{
@@ -31,7 +31,7 @@ void	*allocate_found_node(t_malloc *find, size_t size)
 	return (find->tmp->data);
 }
 
-void	*find_small_node(t_malloc *find, size_t size)
+static void		*find_small_node(t_malloc *find, size_t size)
 {
 	while (find->ptr)
 	{
@@ -54,7 +54,7 @@ void	*find_small_node(t_malloc *find, size_t size)
 	return (allocate_found_node(find, size));
 }
 
-t_data	*allocate_big_node(size_t size)
+static t_data	*allocate_big_node(size_t size)
 {
 	t_data	*this;
 	int		get_data;
@@ -65,14 +65,15 @@ t_data	*allocate_big_node(size_t size)
 	this = mmap(NULL, get_data,
 		PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	this->size = get_data;
+	this->big_size = size;
 	this->next = NULL;
 	this->data = this + 1;
-	ft_printf("Allocated %d to address :%p\n", this->size, this);
-	ft_printf("Data address for pointer:%p\n", this->data);
+	ft_printf("Malloc: Allocated %d to address :%p\n", this->size, this);
+	ft_printf("Malloc: Data address for pointer:%p\n", this->data);
 	return (this);
 }
 
-void	*find_big_node(t_malloc *find, size_t size)
+static void		*find_big_node(t_malloc *find, size_t size)
 {
 	t_data *this;
 
@@ -93,7 +94,7 @@ void	*find_big_node(t_malloc *find, size_t size)
 	return (NULL);
 }
 
-void	*malloc(size_t size)
+void			*malloc(size_t size)
 {
 	t_malloc find;
 

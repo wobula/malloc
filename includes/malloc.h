@@ -39,6 +39,7 @@ typedef struct		s_data
 	struct s_data	*next;
 	size_t			available;
 	size_t			size;
+	size_t			big_size;
 	void			*data;
 }					t_data;
 
@@ -60,8 +61,8 @@ typedef struct		s_realloc
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
 void				free(void *ptr);
+void				show_alloc_mem();
 
-t_data				*allocate_data(t_data *start, size_t count, int size);
 t_node				*get_head();
 t_node				*expand_head();
 

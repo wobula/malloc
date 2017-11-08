@@ -32,15 +32,13 @@ int		check_big_nodes(t_node *check, void *ptr)
 	{
 		if (prev)
 			prev->next = tmp->next;
-		ft_printf("Free: big allocation at address
-			range %p had %d size\n", tmp, tmp->size);
 		munmap(&tmp, tmp->size);
 		return (1);
 	}
 	return (0);
 }
 
-int		check_little_nodes(t_malloc *help, void *this)
+int		check_smaller_nodes(t_malloc *help, void *this)
 {
 	if (this < (void*)help->ptr->tny_end)
 	{
@@ -57,7 +55,7 @@ int		check_little_nodes(t_malloc *help, void *this)
 	return (0);
 }
 
-int		free_little_node(t_malloc *find, void *this)
+int		free_smaller_node(t_malloc *find, void *this)
 {
 	while (find->tmp->next)
 	{
@@ -67,12 +65,10 @@ int		free_little_node(t_malloc *find, void *this)
 			{
 				find->tmp->available = 1;
 				*find->allocations = *find->allocations + 1;
-				ft_printf("Free: smaller allocation at address
-					range %p had %d size\n", find->tmp, find->tmp->size);
 				return (1);
 			}
 			else
-				ft_printf("Pointer found is already free\n");
+				ft_printf("Free: Pointer found is already free\n");
 			break ;
 		}
 		find->tmp = find->tmp->next;
@@ -87,8 +83,8 @@ void	free(void *this)
 	find.ptr = get_head();
 	if (check_big_nodes(find.ptr, this))
 		return ;
-	if (check_little_nodes(&find, this))
-		free_little_node(&find, this);
+	if (check_smaller_nodes(&find, this))
+		free_smaller_node(&find, this);
 	else
-		ft_printf("Pointer being freed was not allocated\n");
+		ft_printf("Free: Pointer being freed was not allocated\n");
 }
