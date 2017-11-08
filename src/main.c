@@ -16,7 +16,7 @@ int		main(void)
 {
 	char	*ptr2;
 
-	ptr2 = malloc(5000);
+	ptr2 = malloc(10);
 	realloc(ptr2, 101);
 	free(ptr2);
 	return (0);
