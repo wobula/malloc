@@ -15,9 +15,15 @@
 int		main(void)
 {
 	char	*ptr2;
+	char	*ptr;
+	char 	*ptr3;
 
 	ptr2 = malloc(10);
+	ptr3 = malloc(101);
+	ptr = malloc(5000);
 	realloc(ptr2, 101);
+	realloc(ptr, 10);
+	realloc(ptr3, 5000);
 	free(ptr2);
 	return (0);
 }
