@@ -3,46 +3,68 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rschramm <rschramm@42.fr>                  +#+  +:+       +#+         #
+#    By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/03/10 14:23:11 by rschramm          #+#    #+#              #
-#    Updated: 2017/11/06 09:08:46 by rschramm         ###   ########.fr        #
+#    Created: 2016/11/30 12:55:46 by rschramm          #+#    #+#              #
+#    Updated: 2017/11/08 12:36:21 by rschramm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.SILENT:
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
 
-NAME = malloc
+NAME = libft_malloc_$(HOSTTYPE).so
+LINK = libft_malloc.so
 
-CC = gcc
+TESTNAME = malloc
+TESTSRC = ./src/main.c
 
-FLAG += -Wall -Werror -Wextra
+LIBFT = ./libft/libftprintf.a
+LIBFTHEAD = -I ./libft/includes/
 
-SRC = src/main.c \
-		src/allocate_node.c \
-		src/show_alloc_mem.c \
-		src/malloc.c \
-		src/realloc.c \
-		src/free.c \
+GCC = gcc
+HEADERS = -I ./includes/
+FLAGS += -Wall -Wextra -Werror
+SRC = ./src/malloc.c \
+	  ./src/free.c \
+	  ./src/realloc.c \
+	  ./src/allocate_node.c \
+	  ./src/show_alloc_mem.c \
 
-LIBFT = libft/libftprintf.a \
+COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
+TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(TESTSRC) -o $(TESTNAME) -g
+
+OUTPUTBUILD = echo "\033[32mBuilding Malloc\033[0m"
+OUTPUTCLEAN = echo "\033[31mRemoving Objects\033[0m"
+OUTPUTFCLEAN = echo "\033[31mRemoving Executable\033[0m"
+OUTPUTGO = echo "\033[92mSystem Ready :D\033[0m"
+OUTPUTLIB = echo "\033[36;21mRebuilding Lib\033[0m"
+OUTPUTRE = echo "\033[96;21mRebuilding Malloc\033[0m"
 
 all: $(NAME)
 
 $(NAME):
-	@gcc $(FLAG) -o $(NAME) $(SRC) $(LIBFT)
-	@echo "\033[33;32mSystem Ready >:D"
+	@cd libft && make re
+	@$(OUTPUTBUILD)
+	@$(COMPILE)
+	@/bin/rm -f $(LINK)
+	@ln -s $(NAME) $(LINK)
+	@$(TEST_MAIN)
+	@$(OUTPUTGO)
 
 clean:
+	@$(OUTPUTCLEAN)
 	@rm -f $(OBJ)
-	@echo "\033[33mCleaned..."
 
 fclean: clean
-	@rm -f $(OBJ)
+	@$(OUTPUTFCLEAN)
 	@rm -f $(NAME)
-	@echo "\033[31mfCleaned..."
+	@rm -f $(TESTNAME)
 
 re:
-	@cd ./libft && make re
+	@$(OUTPUTRE)
 	@make fclean
-	@make all
+	@make
+
+.PHONY: all clean fclean re
