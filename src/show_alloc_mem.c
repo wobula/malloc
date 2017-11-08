@@ -21,13 +21,16 @@ static void	print_allocations(t_alloc *find_mem, char *context)
 		if (find_mem->inside->size != 0 && find_mem->inside->available == 0)
 		{
 			printf("%p - %p : %zu bytes\n", find_mem->inside->data,
-				(void*)((char*)find_mem->inside->data) + find_mem->inside->size, find_mem->inside->size);
-			find_mem->current_total = find_mem->current_total + find_mem->inside->size;
+				(void*)((char*)find_mem->inside->data)
+				+ find_mem->inside->size, find_mem->inside->size);
+			find_mem->current_total =
+			find_mem->current_total + find_mem->inside->size;
 			find_mem->total = find_mem->total + find_mem->inside->size;
 		}
 		find_mem->inside = find_mem->inside->next;
 	}
-	ft_printf("SUMMARY - %s total - %d bytes\n", context, find_mem->current_total);
+	ft_printf("SUMMARY - %s total - %d bytes\n", context,
+		find_mem->current_total);
 	ft_putchar('\n');
 }
 
@@ -40,17 +43,20 @@ static void	print_large_allocations(t_alloc *find_mem, char *context)
 		if (find_mem->inside->size != 0)
 		{
 			printf("%p - %p : %zu bytes\n", find_mem->inside->data,
-				(void*)((char*)find_mem->inside->data) + find_mem->inside->size, find_mem->inside->big_size);
-			find_mem->current_total = find_mem->current_total + find_mem->inside->big_size;
+				(void*)((char*)find_mem->inside->data)
+				+ find_mem->inside->size, find_mem->inside->big_size);
+			find_mem->current_total =
+			find_mem->current_total + find_mem->inside->big_size;
 			find_mem->total = find_mem->total + find_mem->inside->big_size;
 		}
 		find_mem->inside = find_mem->inside->next;
 	}
-	ft_printf("SUMMARY - %s total - %d bytes\n", context, find_mem->current_total);
+	ft_printf("SUMMARY - %s total - %d bytes\n", context,
+		find_mem->current_total);
 	ft_putchar('\n');
 }
 
-void		show_alloc_mem()
+void		show_alloc_mem(void)
 {
 	t_alloc find_mem;
 
@@ -61,13 +67,10 @@ void		show_alloc_mem()
 		ft_printf("Head address: %p\n\n", find_mem.top);
 		find_mem.inside = find_mem.top->tny;
 		print_allocations(&find_mem, "TINY: ");
-
 		find_mem.inside = find_mem.top->med;
 		print_allocations(&find_mem, "SMALL: ");
-
 		find_mem.inside = find_mem.top->large;
 		print_large_allocations(&find_mem, "LARGE: ");
-
 		find_mem.top = find_mem.top->next;
 	}
 	ft_printf("OVERALL SUMMARY: %d bytes\n", find_mem.total);
