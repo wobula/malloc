@@ -14,16 +14,10 @@
 
 int		main(void)
 {
-	char	*ptr;
 	char	*ptr2;
-	char	*ptr3;
 
-	ptr = NULL;
-	ptr = realloc(ptr, 600);
-	ptr2 = malloc(50);
-	ptr3 = malloc(400);
-	free(ptr);
+	ptr2 = malloc(5000);
+	realloc(ptr2, 101);
 	free(ptr2);
-	free(ptr3);
 	return (0);
 }
