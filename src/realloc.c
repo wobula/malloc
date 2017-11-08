@@ -33,7 +33,24 @@ int 	search_big_nodes(t_realloc *find, void *this)
 	return (0);
 }
 
-int search_small_nodes(t_realloc *find, void *this)
+void	get_specific_allocation(t_realloc *find, void *this)
+{
+	t_data *tmp;
+
+	tmp = find->inside;
+	while (tmp)
+	{
+		if (tmp->data == this)
+		{
+			ft_printf("Realloc: confirmed %p\n", tmp->data);
+			find->inside = tmp;
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+int 	search_small_nodes(t_realloc *find, void *this)
 {
 	t_node *tmp = find->top;
 	while (tmp)
@@ -41,13 +58,15 @@ int search_small_nodes(t_realloc *find, void *this)
 		if (this < (void*)tmp->tny_end)
 		{
 			find->inside = tmp->tny;
-			ft_printf("found your malloc %p in the tny section %p\n", this, tmp->tny_end);
+			get_specific_allocation(find, this);
+			ft_printf("Realloc: found your malloc %p in the tny section %p\n", this, tmp->tny_end);
 			return (1);
 		}
 		else if (this < (void*)tmp->med_end)
 		{
 			find->inside = tmp->med;
-			ft_printf("found your malloc %p in the med section%p\n", this, tmp->med_end);
+			get_specific_allocation(find, this);
+			ft_printf("Realloc: found your malloc %p in the med section%p\n", this, tmp->med_end);
 			return (1);
 		}
 		tmp = tmp->next;
