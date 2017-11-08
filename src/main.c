@@ -14,16 +14,22 @@
 
 int		main(void)
 {
-	char	*ptr2;
 	char	*ptr;
-	char 	*ptr3;
+	int		x;
 
-	ptr2 = malloc(10);
-	ptr3 = malloc(101);
-	ptr = malloc(5000);
-	realloc(ptr2, 101);
-	realloc(ptr, 10);
-	realloc(ptr3, 5000);
-	free(ptr2);
+	ptr = malloc(10);
+	x = -1;
+	while (++x < 9)
+		ptr[x] = 'a';
+	ptr[x] = '\0';
+	ft_printf("1st: %s\n\n", ptr);
+	ptr = realloc(ptr, 1000);
+	ft_printf("2nd: %s\n\n", ptr);
+	x = 8;
+	while (++x < 999)
+		ptr[x] = 'b';
+	ptr[x] = '\0';
+	ft_printf("2nd: %s\n\n", ptr);
+	free(ptr);
 	return (0);
 }

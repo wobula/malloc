@@ -32,7 +32,8 @@ int		check_big_nodes(t_node *check, void *ptr)
 	{
 		if (prev)
 			prev->next = tmp->next;
-		ft_printf("Free: big allocation at address range %p had %d size\n", tmp, tmp->size);
+		ft_printf("Free: big allocation at address
+			range %p had %d size\n", tmp, tmp->size);
 		munmap(&tmp, tmp->size);
 		return (1);
 	}
@@ -66,7 +67,8 @@ int		free_little_node(t_malloc *find, void *this)
 			{
 				find->tmp->available = 1;
 				*find->allocations = *find->allocations + 1;
-				ft_printf("Free: smaller allocation at address range %p had %d size\n", find->tmp, find->tmp->size);
+				ft_printf("Free: smaller allocation at address
+					range %p had %d size\n", find->tmp, find->tmp->size);
 				return (1);
 			}
 			else
