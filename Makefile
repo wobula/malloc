@@ -20,6 +20,7 @@ FLAG += -Wall -Werror -Wextra
 
 SRC = src/main.c \
 		src/allocate_node.c \
+		src/show_alloc_mem.c \
 		src/malloc.c \
 		src/realloc.c \
 		src/free.c \

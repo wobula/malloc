@@ -43,20 +43,13 @@ typedef struct		s_data
 	void			*data;
 }					t_data;
 
-typedef struct		s_malloc
-{
-	t_node			*ptr;
-	t_data			*tmp;
-	size_t			*allocations;
-}					t_malloc;
-
-typedef struct		s_realloc
+typedef struct		s_alloc
 {
 	t_node			*top;
 	t_data			*inside;
 	t_data			*prev;
 	size_t			*allocations;
-}					t_realloc;
+}					t_alloc;
 
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);

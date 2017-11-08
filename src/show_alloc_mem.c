@@ -14,5 +14,7 @@
 
 void	show_alloc_mem()
 {
+
 	
+	ft_printf("Show this memory data, yo");
 }

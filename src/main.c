@@ -30,6 +30,7 @@ int		main(void)
 		ptr[x] = 'b';
 	ptr[x] = '\0';
 	ft_printf("2nd: %s\n\n", ptr);
+	show_alloc_mem();
 	free(ptr);
 	return (0);
 }

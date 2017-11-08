@@ -38,32 +38,32 @@ int		check_big_nodes(t_node *check, void *ptr)
 	return (0);
 }
 
-int		check_smaller_nodes(t_malloc *help, void *this)
+int		check_smaller_nodes(t_alloc *find, void *this)
 {
-	if (this < (void*)help->ptr->tny_end)
+	if (this < (void*)find->top->tny_end)
 	{
-		help->tmp = help->ptr->tny;
-		help->allocations = &help->ptr->tny_allocations;
+		find->inside = find->top->tny;
+		find->allocations = &find->top->tny_allocations;
 		return (1);
 	}
-	else if (this < (void*)help->ptr->med_end)
+	else if (this < (void*)find->top->med_end)
 	{
-		help->tmp = help->ptr->med;
-		help->allocations = &help->ptr->med_allocations;
+		find->inside = find->top->med;
+		find->allocations = &find->top->med_allocations;
 		return (1);
 	}
 	return (0);
 }
 
-int		free_smaller_node(t_malloc *find, void *this)
+int		free_smaller_node(t_alloc *find, void *this)
 {
-	while (find->tmp->next)
+	while (find->inside->next)
 	{
-		if (find->tmp->data == this)
+		if (find->inside->data == this)
 		{
-			if (find->tmp->available == 0)
+			if (find->inside->available == 0)
 			{
-				find->tmp->available = 1;
+				find->inside->available = 1;
 				*find->allocations = *find->allocations + 1;
 				return (1);
 			}
@@ -71,17 +71,17 @@ int		free_smaller_node(t_malloc *find, void *this)
 				ft_printf("Free: Pointer found is already free\n");
 			break ;
 		}
-		find->tmp = find->tmp->next;
+		find->inside = find->inside->next;
 	}
 	return (0);
 }
 
 void	free(void *this)
 {
-	t_malloc find;
+	t_alloc find;
 
-	find.ptr = get_head();
-	if (check_big_nodes(find.ptr, this))
+	find.top = get_head();
+	if (check_big_nodes(find.top, this))
 		return ;
 	if (check_smaller_nodes(&find, this))
 		free_smaller_node(&find, this);

@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-static int	search_big_nodes(t_realloc *find, void *this)
+static int	search_big_nodes(t_alloc *find, void *this)
 {
 	t_data *tmp;
 
@@ -33,7 +33,7 @@ static int	search_big_nodes(t_realloc *find, void *this)
 	return (0);
 }
 
-static void	get_specific_allocation(t_realloc *find, void *this)
+static void	get_specific_allocation(t_alloc *find, void *this)
 {
 	t_data *tmp;
 
@@ -50,7 +50,7 @@ static void	get_specific_allocation(t_realloc *find, void *this)
 	}
 }
 
-static int	search_small_nodes(t_realloc *find, void *this)
+static int	search_small_nodes(t_alloc *find, void *this)
 {
 	t_node *tmp;
 
@@ -76,7 +76,7 @@ static int	search_small_nodes(t_realloc *find, void *this)
 	return (0);
 }
 
-static int	find_malloc(t_realloc *find, void *this)
+static int	find_malloc(t_alloc *find, void *this)
 {
 	if (search_big_nodes(find, this))
 		return (1);
@@ -87,7 +87,7 @@ static int	find_malloc(t_realloc *find, void *this)
 
 void		*realloc(void *this, size_t size)
 {
-	t_realloc	find;
+	t_alloc		find;
 	void		*allocation;
 
 	if (size == 0)
