@@ -12,66 +12,91 @@
 
 #include "../includes/malloc.h"
 
-static void	print_allocations(t_alloc *find_mem, char *context)
+static size_t	show_inner_data(t_alloc *show, t_data *inside)
 {
-	printf("%s %p\n", context, find_mem->inside);
-	find_mem->current_total = 0;
-	while (find_mem->inside)
+	size_t	current_bytes;
+	void	*end;
+
+	current_bytes = 0;
+	while (inside)
 	{
-		if (find_mem->inside->size != 0 && find_mem->inside->available == 0)
+		if (inside->available == 0)
 		{
-			printf("%p - %p : %zu bytes\n", find_mem->inside->data,
-				(void*)((char*)find_mem->inside->data)
-				+ find_mem->inside->size, find_mem->inside->size);
-			find_mem->current_total =
-			find_mem->current_total + find_mem->inside->size;
-			find_mem->total = find_mem->total + find_mem->inside->size;
+			end = (void*)((char*)(inside + 1)) + inside->user_size;
+			ft_dprintf(2, "%p - %p : ", inside, end);
+			ft_dprintf(2, "%zu bytes\n", inside->user_size);
+			current_bytes += inside->user_size;
+			show->total_allocs++;
 		}
-		find_mem->inside = find_mem->inside->next;
+		inside = inside->next;
 	}
-	ft_printf("SUMMARY - %s total - %d bytes\n", context,
-		find_mem->current_total);
-	ft_putchar('\n');
+	return (current_bytes);
 }
 
-static void	print_large_allocations(t_alloc *find_mem, char *context)
+static void		print_smaller_allocs(t_alloc *show, char *context, int opt)
 {
-	printf("%s %p\n", context, find_mem->inside);
-	find_mem->current_total = 0;
-	while (find_mem->inside)
+	size_t current_bytes;
+
+	current_bytes = 0;
+	show->top = show->head;
+	if (opt == 0)
+		ft_dprintf(2, "%s %=5p\n", context, show->head->tny);
+	else
+		ft_dprintf(2, "%s %=5p\n", context, show->head->med);
+	while (show->top)
 	{
-		if (find_mem->inside->size != 0)
-		{
-			printf("%p - %p : %zu bytes\n", find_mem->inside->data,
-				(void*)((char*)find_mem->inside->data)
-				+ find_mem->inside->size, find_mem->inside->big_size);
-			find_mem->current_total =
-			find_mem->current_total + find_mem->inside->big_size;
-			find_mem->total = find_mem->total + find_mem->inside->big_size;
-		}
-		find_mem->inside = find_mem->inside->next;
+		if (opt == 0)
+			show->inside = show->top->tny;
+		else
+			show->inside = show->top->med;
+		current_bytes += show_inner_data(show, show->inside);
+		show->top = show->top->next;
 	}
-	ft_printf("SUMMARY - %s total - %d bytes\n", context,
-		find_mem->current_total);
-	ft_putchar('\n');
+	show->total_alloc_bytes = show->total_alloc_bytes + current_bytes;
+	ft_dprintf(2, "%s SUMMARY : %d bytes\n\n", context, current_bytes);
 }
 
-void		show_alloc_mem(void)
+static void		print_large_allocs(t_alloc *show, char *context)
 {
-	t_alloc find_mem;
+	size_t	current_bytes;
+	void	*end;
 
-	find_mem.top = get_head();
-	find_mem.total = 0;
-	while (find_mem.top)
+	current_bytes = 0;
+	show->inside = show->head->large;
+	ft_dprintf(2, "%s %=5p\n", context, show->head->large);
+	while (show->inside)
 	{
-		ft_printf("Head address: %p\n\n", find_mem.top);
-		find_mem.inside = find_mem.top->tny;
-		print_allocations(&find_mem, "TINY: ");
-		find_mem.inside = find_mem.top->med;
-		print_allocations(&find_mem, "SMALL: ");
-		find_mem.inside = find_mem.top->large;
-		print_large_allocations(&find_mem, "LARGE: ");
-		find_mem.top = find_mem.top->next;
+		end = (void*)((char*)(show->inside + 1)) + show->inside->user_size;
+		current_bytes += show->inside->user_size;
+		show->total_allocs++;
+		ft_dprintf(2, "%p - %p : ", show->inside, end);
+		ft_dprintf(2, "%zu bytes\n", show->inside->user_size);
+		show->inside = show->inside->next;
 	}
-	ft_printf("OVERALL SUMMARY: %d bytes\n", find_mem.total);
+	ft_dprintf(2, "%s SUMMARY : %d bytes\n\n", context, current_bytes);
+	show->total_alloc_bytes = show->total_alloc_bytes + current_bytes;
+}
+
+void			show_alloc_mem(void)
+{
+	t_alloc show;
+	size_t	total_memory;
+
+	show.head = get_head();
+	show.total_allocs = 0;
+	show.total_alloc_bytes = 0;
+	show.leaks = show.head->total_allocs - show.head->frees;
+	ft_printf("total allocs: %d\n", show.head->total_allocs);
+	ft_dprintf(2, "\nShow_alloc_mem: Malloc Info\n\n");
+	print_smaller_allocs(&show, "TINY :", 0);
+	print_smaller_allocs(&show, "MED :", 1);
+	print_large_allocs(&show, "LARGE :");
+	total_memory = show.head->freed_bytes + show.total_alloc_bytes;
+	ft_dprintf(2, "OVERALL SUMMARY:\n");
+	ft_dprintf(2, "Total allocs         : %zu\n", show.head->total_allocs);
+	ft_dprintf(2, "Total frees          : %zu\n", show.head->frees);
+	ft_dprintf(2, "Total leaks          : %zu\n", show.leaks);
+	ft_dprintf(2, "Total unfreed bytes  : %zu\n", show.total_alloc_bytes);
+	ft_dprintf(2, "Total freed bytes    : %zu\n", show.head->freed_bytes);
+	ft_dprintf(2, "Total memory used    : %zu\n", total_memory);
 }

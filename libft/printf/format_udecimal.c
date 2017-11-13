@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   format_hex                                         :+:      :+:    :+:   */
+/*   format_udecimal.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,69 +12,79 @@
 
 #include "../includes/libft.h"
 
-static void	print_character(t_spec *this, char print, int times)
+static void	get_sign(t_spec *this, t_format *form)
 {
-	while (times > 0)
+	if (this->data.super < 0)
 	{
-		ft_putchar_fd(print, *this->fd);
-		*this->ret = *this->ret + 1;
-		times--;
+		form->sign = '-';
+		this->data.super *= -1;
+	}
+	else if (this->show_sign == true)
+	{
+		form->sign = '+';
+		form->length++;
 	}
 }
 
 static void	constructor(t_spec *this, t_format *form)
 {
-	if (this->type == 'x')
-		form->print = ft_ptf_itoabase(this->data.super_u, 16, 0);
-	else
-		form->print = ft_ptf_itoabase(this->data.super_u, 16, 1);
+	form->sign = 0;
+	get_sign(this, form);
+	form->print = ft_ptf_itoabase(this->data.super_u, 10, this->alt_form);
 	form->length = ft_strlen(form->print);
 	form->zeroes = 0;
 	form->spaces = 0;
 	if (this->precision > form->length)
 		form->zeroes += this->precision - form->length;
-	if (this->alt_form == true)
-		form->length += 2;
+	if (form->sign != 0)
+		form->length++;
 	if (this->width > form->length + form->zeroes)
-		form->spaces = this->width - (form->length + form->zeroes);
+		form->spaces += this->width - (form->length + form->zeroes);
 }
 
-void		left_align_norm(t_spec *this, t_format *form)
+static void	print_character(t_spec *this, char c, int times)
 {
-	if (this->alt_form == true)
-		ft_fputstr_fd("0x", *this->fd);
-	print_character(this, '0', form->zeroes);
-	if (this->max > -1)
-		ft_fputstrn_fd(form->print, this->max, *this->fd);
-	else
-		ft_fputstr_fd(form->print, *this->fd);
-	if (form->spaces > 0)
-		print_character(this, ' ', form->spaces);
-	*this->ret = *this->ret + form->length;
+	while (times > 0)
+	{
+		ft_putchar_fd(c, *this->fd);
+		times--;
+		*this->ret = *this->ret + 1;
+	}
 }
 
-void		format_hex(t_print *ptr, t_spec *this)
+static void	print_width(t_spec *this, t_format *form)
+{
+	if (this->prepend_zero == true)
+	{
+		if (form->sign != 0)
+			ft_putchar_fd(form->sign, *this->fd);
+		print_character(this, '0', form->spaces);
+	}
+	else
+		print_character(this, ' ', form->spaces);
+}
+
+void		format_udecimal(t_print *ptr, t_spec *this)
 {
 	t_format form;
 
 	conversions_u(ptr, this);
 	constructor(this, &form);
-	printf("````%d\n", this->max);
 	if (this->left_align == false)
 	{
-		if (form.zeroes > 0)
-			print_character(this, '0', form.spaces);
-		else
-			print_character(this, ' ', form.spaces);
-		if (this->alt_form == true)
-			ft_fputstr_fd("0x", *this->fd);
+		print_width(this, &form);
+		if (form.sign != 0 && this->prepend_zero == false)
+			ft_putchar_fd(form.sign, *this->fd);
 		print_character(this, '0', form.zeroes);
-		if (this->max > -1)
-			ft_fputstrn_fd(form.print, this->max, *this->fd);
-		else
-			ft_fputstr_fd(form.print, *this->fd);
-		*this->ret = *this->ret + form.length;
+		ft_fputstr_fd(form.print, *this->fd);
 	}
 	else
-		left_align_norm(this, &form);
+	{
+		if (form.sign != 0)
+			ft_putchar_fd(form.sign, *this->fd);
+		print_character(this, '0', form.zeroes);
+		ft_fputstr_fd(form.print, *this->fd);
+		print_character(this, ' ', form.spaces);
+	}
+	*this->ret = *this->ret + form.length;
 }

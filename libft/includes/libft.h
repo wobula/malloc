@@ -63,6 +63,7 @@ void				ft_putnbr(int nbr);
 void				ft_putstr(char *str);
 void				ft_fputstr(char *str);
 void				ft_fputstr_fd(char *str, int fd);
+void				ft_fputstrn_fd(char *str, int max, int fd);
 void				ft_putendl(char const *s);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putnbr_fd(int n, int fd);

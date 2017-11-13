@@ -34,6 +34,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_putstr.c \
 	   libft/ft_fputstr.c \
 	   libft/ft_fputstr_fd.c \
+	   libft/ft_fputstrn_fd.c \
 	   libft/ft_putendl.c \
 	   libft/ft_putnbr.c \
 	   libft/ft_putchar_fd.c \
@@ -75,13 +76,15 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_lstmap.c \
 
 PRINTF = printf/ft_printf.c \
-		 printf/parse.c \
+		printf/ft_dprintf.c \
+		printf/parse.c \
 		printf/gather_flags.c \
 		printf/gather_flags2.c \
 		printf/conversions.c \
 		printf/format_string.c \
 		printf/format_char.c \
 		printf/format_decimal.c \
+		printf/format_udecimal.c \
 		printf/format_percent.c \
 		printf/format_pointer.c \
 		printf/format_octal.c \

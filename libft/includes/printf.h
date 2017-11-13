@@ -49,6 +49,7 @@ typedef struct				s_spec
 	int						len;
 	int						precision;
 	int						width;
+	int						max;
 	int						*ret;
 	int						*fd;
 	va_list					*arg;
@@ -73,6 +74,7 @@ int							length(t_spec *this, char *format);
 int							flags(t_spec *this, char *format);
 int							ft_isflag(char test);
 int							colors(t_spec *this);
+int							max(t_spec *this, char *format);
 
 void						conversions(t_print *ptr, t_spec *this);
 void						conversions_u(t_print *ptr, t_spec *this);
@@ -81,6 +83,7 @@ void						format_char(t_print *ptr, t_spec *this);
 void						format_percent(t_spec *this);
 void						format_string(t_print *ptr, t_spec *this);
 void						format_decimal(t_print *ptr, t_spec *this);
+void						format_udecimal(t_print *ptr, t_spec *this);
 void						format_pointer(t_print *ptr, t_spec *this);
 void						format_octal(t_print *ptr, t_spec *this);
 void						format_hex(t_print *ptr, t_spec *this);

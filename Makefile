@@ -27,10 +27,11 @@ GCC = gcc
 HEADERS = -I ./includes/
 FLAGS += -Wall -Wextra -Werror
 SRC = ./src/malloc.c \
-	  ./src/free.c \
 	  ./src/realloc.c \
+	  ./src/free.c \
 	  ./src/allocate_node.c \
 	  ./src/show_alloc_mem.c \
+	  ./src/calloc.c \
 
 COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
 TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(TESTSRC) -o $(TESTNAME) -g

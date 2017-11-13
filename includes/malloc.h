@@ -18,47 +18,56 @@
 
 # define TNYSIZE 100
 # define MEDSIZE 500
+# define NODECOUNT 1
 
 typedef struct		s_node
 {
 	struct s_node	*next;
-	size_t			count;
+	size_t			slab_count;
+	size_t			slab_size;
 	struct s_data	*tny;
-	struct s_data	*tny_end;
-	size_t			tny_allocations;
-	int				tny_size;
+	size_t			tny_allocs;
+	size_t			tny_block;
 	struct s_data	*med;
 	struct s_data	*med_end;
-	size_t			med_allocations;
-	int				med_size;
+	size_t			med_allocs;
+	size_t			med_block;
 	struct s_data	*large;
+	size_t			large_allocs;
+	size_t			frees;
+	size_t			freed_bytes;
+	size_t			total_allocs;
 }					t_node;
 
 typedef struct		s_data
 {
 	struct s_data	*next;
 	size_t			available;
-	size_t			size;
-	size_t			big_size;
-	void			*data;
+	size_t			user_size;
+	size_t			block_size;
+	void			*user_data;
 }					t_data;
 
 typedef struct		s_alloc
 {
+	t_node			*head;
 	t_node			*top;
+	t_node			*prev_node;
 	t_data			*inside;
 	t_data			*prev;
-	size_t			*allocations;
-	uintmax_t		current_total;
-	uintmax_t		total;
+	size_t			total_alloc_bytes;
+	size_t			total_allocs;
+	size_t			leaks;
 }					t_alloc;
 
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
+void				*calloc(size_t nitems, size_t size);
 void				free(void *ptr);
 void				show_alloc_mem();
 
+void				free_head(void);
 t_node				*get_head();
-t_node				*expand_head();
+t_node				*slab_carver();
 
 #endif

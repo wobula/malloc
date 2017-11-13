@@ -14,53 +14,80 @@
 
 t_node	*g_head = NULL;
 
-t_data	*allocate_data(t_data *start, size_t node_count, int storage_size)
+static void	block_builder(t_data *start, int node_count, int storage_size)
 {
-	t_data *tmp;
-
-	tmp = start;
-	while (node_count > 0)
+	while (node_count-- != 0)
 	{
-		tmp->data = (void*)(tmp + 1);
-		tmp->next = (t_data*)((char*)tmp->data + storage_size);
-		tmp->available = 1;
-		node_count--;
-		tmp = tmp->next;
+		start->user_data = (void*)(start + 1);
+		start->available = 1;
+		if (node_count != 0)
+		{
+			start->next = (t_data*)((char*)start->user_data + storage_size);
+			start = start->next;
+		}
 	}
-	tmp->next = NULL;
-	return (tmp);
+	start->next = NULL;
 }
 
-t_node	*expand_head(void)
+static void	node_builder(t_node *this)
+{
+	this->large = NULL;
+	this->next = NULL;
+	this->freed_bytes = 0;
+	this->tny_allocs = 0;
+	this->med_allocs = 0;
+	this->large_allocs = 0;
+	this->frees = 0;
+	this->freed_bytes = 0;
+	this->total_allocs = 0;
+}
+
+t_node		*slab_carver(void)
 {
 	int		get_size;
 	int		data;
 	t_node	*ptr;
 
-	get_size = sizeof(t_node) +
-					((TNYSIZE + sizeof(t_data)) * 100) +
-					((MEDSIZE + sizeof(t_data)) * 100);
+	get_size = sizeof(t_node) + ((TNYSIZE + sizeof(t_data)) * NODECOUNT) +
+					((MEDSIZE + sizeof(t_data)) * NODECOUNT);
 	data = 0;
 	while (data < get_size)
 		data = data + getpagesize();
 	ptr = mmap(NULL, data, PROT_READ | PROT_WRITE,
 		MAP_ANON | MAP_PRIVATE, -1, 0);
-	ptr->tny_allocations = 100;
+	node_builder(ptr);
+	ptr->slab_size = data;
 	ptr->tny = (t_data*)(ptr + 1);
-	ptr->tny_size = (sizeof(t_data) + TNYSIZE) * 100;
-	ptr->tny_end = allocate_data(ptr->tny, 100, TNYSIZE);
-	ptr->med_allocations = 100;
-	ptr->med = (t_data*)(((char*)(ptr->tny_end + 1)) + TNYSIZE);
-	ptr->med_size = (sizeof(t_data) + MEDSIZE) * 100;
-	ptr->med_end = allocate_data(ptr->med, 100, MEDSIZE);
-	ptr->large = NULL;
-	ptr->next = NULL;
+	ptr->tny_block = (sizeof(t_data) + TNYSIZE) * NODECOUNT;
+	block_builder(ptr->tny, NODECOUNT, TNYSIZE);
+	ptr->med = (t_data*)(((char*)(ptr->tny + 1)) + TNYSIZE);
+	ptr->med_block = (sizeof(t_data) + MEDSIZE) * NODECOUNT;
+	ptr->med_end = (t_data*)(((char*)(ptr->med + 1)) + MEDSIZE);
+	block_builder(ptr->med, NODECOUNT, MEDSIZE);
 	return (ptr);
 }
 
-t_node	*get_head(void)
+void		free_head(void)
+{
+	t_node *please;
+	t_node *prev;
+
+	please = g_head;
+	while (please)
+	{
+		prev = please;
+		please = please->next;
+		munmap(prev, prev->slab_size);
+		prev = NULL;
+	}
+	if (prev)
+		munmap(prev, prev->slab_size);
+	g_head = NULL;
+}
+
+t_node		*get_head(void)
 {
 	if (!g_head)
-		g_head = expand_head();
+		g_head = slab_carver();
 	return (g_head);
 }

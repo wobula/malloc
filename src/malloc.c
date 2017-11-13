@@ -12,85 +12,73 @@
 
 #include "../includes/malloc.h"
 
-static void		*allocate_found_node(t_alloc *find, size_t size)
+static t_data	*memory_maker(t_alloc *find, size_t size)
 {
-	while (find->inside->next)
-	{
-		if (find->inside->available == 1)
-		{
-			find->inside->available = 0;
-			find->inside->size = size;
-			*find->allocations = *find->allocations - 1;
-			ft_printf("Malloc: you have %d allocations leftover\n",
-				*find->allocations);
-			ft_printf("Malloc: Using free pointer address %p\n", find->inside);
-			break ;
-		}
-		find->inside = find->inside->next;
-	}
-	return (find->inside->data);
+	t_data	*ptr;
+	size_t	get_data;
+
+	ptr = NULL;
+	get_data = getpagesize();
+	while ((size_t)(size + sizeof(t_data)) > get_data)
+		get_data += getpagesize();
+	ptr = mmap(NULL, get_data, PROT_READ |
+		PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	ptr->block_size = get_data;
+	ptr->user_size = size;
+	ptr->next = NULL;
+	ptr->user_data = ((void*)ptr) + sizeof(t_data);
+	find->head->large_allocs++;
+	find->head->total_allocs++;
+	ft_dprintf(2, "Malloc: new big node %p\n", ptr);
+	return (ptr);
 }
 
-static void		*find_small_node(t_alloc *find, size_t size)
+static t_data	*allocate_big_node(t_alloc *find, size_t size)
+{
+	find->inside = find->head->large;
+	if (!find->head->large)
+		return ((find->head->large = memory_maker(find, size)));
+	while (find->inside->next)
+		find->inside = find->inside->next;
+	return ((find->inside->next = memory_maker(find, size)));
+}
+
+static t_data	*use_smaller_node(t_alloc *find, t_data *start, size_t size)
+{
+	while (start)
+	{
+		if (start->available == 1)
+		{
+			start->user_size = size;
+			start->available = 0;
+			find->head->total_allocs++;
+			ft_dprintf(2, "Malloc: new smaller node %p\n", start->user_data);
+			break ;
+		}
+		start = start->next;
+	}
+	return (start);
+}
+
+static t_data	*allocate_smaller_node(t_alloc *find, size_t size)
 {
 	while (find->top)
 	{
-		if (size <= TNYSIZE && find->top->tny_allocations > 0)
+		if (size < TNYSIZE && find->top->tny_allocs < NODECOUNT)
 		{
-			find->inside = find->top->tny;
-			find->allocations = &find->top->tny_allocations;
-			break ;
+			find->top->tny_allocs++;
+			return (use_smaller_node(find, find->top->tny, size));
 		}
-		else if (size <= MEDSIZE && find->top->med_allocations > 0)
+		else if (size >= TNYSIZE && find->top->med_allocs < NODECOUNT)
 		{
-			find->inside = find->top->med;
-			find->allocations = &find->top->med_allocations;
-			break ;
+			find->top->med_allocs++;
+			return (use_smaller_node(find, find->top->med, size));
 		}
-		if (!find->top->next)
-			find->top->next = expand_head();
+		else if (!find->top->next)
+			find->top->next = slab_carver();
 		find->top = find->top->next;
 	}
-	return (allocate_found_node(find, size));
-}
-
-static t_data	*allocate_big_node(size_t size)
-{
-	t_data	*tmp;
-	int		get_data;
-
-	get_data = getpagesize();
-	while ((int)(size + sizeof(t_data)) > get_data)
-		get_data += getpagesize();
-	tmp = mmap(NULL, get_data,
-		PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-	tmp->size = get_data;
-	tmp->big_size = size;
-	tmp->next = NULL;
-	tmp->data = tmp + 1;
-	ft_printf("Malloc: Allocated %d to address :%p\n", size, tmp->big_size);
-	ft_printf("Malloc: Data address for pointer:%p\n", tmp->data);
-	return (tmp);
-}
-
-static void		*find_big_node(t_alloc *find, size_t size)
-{
-	t_data *tmp;
-
-	if (!find->top->large)
-	{
-		tmp = allocate_big_node(size);
-		find->top->large = tmp;
-		return (tmp->data);
-	}
-	else
-	{
-		tmp = find->top->large;
-		while (tmp->next && tmp->available == 0)
-			tmp = tmp->next;
-		tmp->next = allocate_big_node(size);
-		return (tmp->next->data);
-	}
+	ft_dprintf(2, "Malloc: System out of memory\n");
 	return (NULL);
 }
 
@@ -99,11 +87,13 @@ void			*malloc(size_t size)
 	t_alloc find;
 
 	find.inside = NULL;
-	find.top = get_head();
-	ft_printf("hi: %zu\n", size);
-	if (size <= MEDSIZE)
-		return (find_small_node(&find, size));
+	find.head = get_head();
+	find.top = find.head;
+	if (size <= 0)
+		return (NULL);
+	if (size > MEDSIZE)
+		return ((allocate_big_node(&find, size))->user_data);
 	else
-		return (find_big_node(&find, size));
+		return ((allocate_smaller_node(&find, size))->user_data);
 	return (NULL);
 }
