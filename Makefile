@@ -6,7 +6,7 @@
 #    By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/30 12:55:46 by rschramm          #+#    #+#              #
-#    Updated: 2017/11/13 18:22:11 by rschramm         ###   ########.fr        #
+#    Updated: 2017/11/14 14:27:22 by rschramm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRC = ./src/malloc.c \
 	  ./src/show_alloc_mem.c \
 	  ./src/calloc.c \
 
-COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME)
+COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
 TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(TESTSRC) -o $(TESTNAME) -g
 
 OUTPUTBUILD = echo "\033[32mBuilding Malloc\033[0m"
