@@ -27,7 +27,7 @@ static void	print_width(t_spec *this)
 
 static void	print_char(char output, int *ret, int fd)
 {
-	ft_putchar_fd(fd, output);
+	ft_putchar_fd(output, fd);
 	*ret = *ret + 1;
 }
 

@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 13:11:11 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/14 13:08:03 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # define TNYSIZE 100
 # define MEDSIZE 500
-# define NODECOUNT 2
+# define NODECOUNT 100
 
 typedef struct		s_node
 {

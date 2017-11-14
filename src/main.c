@@ -11,36 +11,28 @@
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
+#include <stdio.h>
 
 int		main(void)
 {
-	char *ptr;
-	char *ptr2;
-	char *ptr3;
-	char *ptr4;
-	int x;
+	char	**ptr;
+	int		x;
 
-	x = -1;
-	//while (1)
-	//{
-		x = -1;
-	while (x++ < 2)
+	while (1)
 	{
-		ft_putstr("sup\n");
-		ptr = malloc(10);
-		ptr2 = malloc(10);
-		ptr3 = malloc(301);
-		ptr4 = malloc(301);
-		ft_putstr("yo\n");
+		ptr = (char**)calloc(sizeof(void *), 200);
+		x = -1;
+		while (x++ < 200)
+		{
+			ptr[x] = (char*)malloc(10);
+			ptr[x][0] = 'a';
+			ft_dprintf(2, "Malloc char: %c\n", ptr[x][0]);
+			ptr[x] = (char*)realloc(ptr[x], 300);
+			ptr[x][0] = 'b';
+			ft_dprintf(2, "Malloc char: %c\n", ptr[x][0]);
+			free(ptr[x]);
+		}
 		free(ptr);
-		ft_putstr("yo1\n");
-		free(ptr2);
-		ft_putstr("yo2\n");
-		free(ptr3);
-		ft_putstr("yo3\n");
-		free(ptr4);
-		ft_putstr("yo4\n");
 	}
-//}
 	return (0);
 }
