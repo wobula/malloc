@@ -18,7 +18,7 @@
 
 # define TNYSIZE 100
 # define MEDSIZE 500
-# define NODECOUNT 1
+# define NODECOUNT 2
 
 typedef struct		s_node
 {
