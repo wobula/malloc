@@ -60,12 +60,16 @@ t_node		*slab_carver(void)
 	node_builder(ptr);
 	ptr->slab_size = data;
 	ptr->tny = (t_data*)(ptr + 1);
+	ptr->tny_end = (t_data*)(((char*)(ptr->tny + 1)) + ((sizeof(t_data) + TNYSIZE) * (NODECOUNT)));
+	ft_dprintf(2, "Allocate: tny beg %p\n", ptr->tny);
+	ft_dprintf(2, "Allocate: tny end %p\n", ptr->tny_end);
 	ptr->tny_block = (sizeof(t_data) + TNYSIZE) * NODECOUNT;
 	block_builder(ptr->tny, NODECOUNT, TNYSIZE);
-	ptr->med = (t_data*)(((char*)(ptr + 1)) + ((sizeof(t_data) + TNYSIZE) * NODECOUNT));
+	ptr->med = (t_data*)(((char*)(ptr + 1)) + ((sizeof(t_data) + TNYSIZE) * (NODECOUNT)));
 	ft_dprintf(2, "Allocate: med beg %p\n", ptr->med);
 	ptr->med_block = (sizeof(t_data) + MEDSIZE) * NODECOUNT;
-	ptr->med_end = (t_data*)(((char*)(ptr->med + 1)) + MEDSIZE);
+	ptr->med_end = (t_data*)(((char*)(ptr->med + 1)) + ((sizeof(t_data) + MEDSIZE) * (NODECOUNT)));
+	ft_dprintf(2, "Allocate: med end %p\n", ptr->med);
 	block_builder(ptr->med, NODECOUNT, MEDSIZE);
 	return (ptr);
 }

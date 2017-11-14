@@ -26,6 +26,7 @@ typedef struct		s_node
 	size_t			slab_count;
 	size_t			slab_size;
 	struct s_data	*tny;
+	struct s_data	*tny_end;
 	size_t			tny_allocs;
 	size_t			tny_block;
 	struct s_data	*med;
