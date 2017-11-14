@@ -29,6 +29,7 @@ static t_data	*memory_maker(t_alloc *find, size_t size)
 	ptr->user_data = ((void*)ptr) + sizeof(t_data);
 	find->head->large_allocs++;
 	find->head->total_allocs++;
+	ft_dprintf(2, "Malloc big: %p for %zu\n", ptr->user_data, size);
 	return (ptr);
 }
 
@@ -48,6 +49,7 @@ static t_data	*use_smaller_node(t_alloc *find, t_data *start, size_t size)
 	{
 		if (start->available == 1)
 		{
+			ft_dprintf(2, "Malloc small: %p for %zu\n", start->user_data, size);
 			start->user_size = size;
 			start->available = 0;
 			find->head->total_allocs++;

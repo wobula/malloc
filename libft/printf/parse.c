@@ -54,7 +54,7 @@ static void	activate_frankenstein(t_print *ptr, int *xptr)
 		format_hex(ptr, &this);
 	else if (this.type == 'u')
 		format_udecimal(ptr, &this);
-	ft_putstr(COLORRESET);
+	//ft_putstr(COLORRESET);
 }
 
 static void	print_buffer(t_print *ptr, int start, int x)

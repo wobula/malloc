@@ -105,6 +105,7 @@ void		free(void *this)
 
 	find.head = get_head();
 	find.top = find.head;
+	ft_dprintf(2, "Free: %p\n", this);
 	if (!this)
 		return ;
 	if (check_smaller_nodes(find, this))
