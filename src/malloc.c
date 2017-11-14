@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 14:06:23 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/13 17:38:25 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ static t_data	*allocate_smaller_node(t_alloc *find, size_t size)
 void			*malloc(size_t size)
 {
 	t_alloc find;
+	void	*ptr;
 
 	find.inside = NULL;
 	find.head = get_head();
@@ -92,8 +93,16 @@ void			*malloc(size_t size)
 	if (size <= 0)
 		return (NULL);
 	if (size > MEDSIZE)
-		return ((allocate_big_node(&find, size))->user_data);
+	{
+		ptr = (allocate_big_node(&find, size))->user_data;
+		ft_printf("Malloc: pointer address %p\n", ptr);
+		return (ptr);
+	}
 	else
-		return ((allocate_smaller_node(&find, size))->user_data);
+	{
+		ptr = (allocate_smaller_node(&find, size))->user_data;
+		ft_printf("Malloc: pointer address %p\n", ptr);
+		return (ptr);
+	}
 	return (NULL);
 }

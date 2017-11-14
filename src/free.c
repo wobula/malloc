@@ -6,7 +6,7 @@
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/06 14:06:23 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/13 17:02:30 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	free_entire_slab(t_alloc find)
 	return (1);
 }
 
-static int	get_specific_node(t_alloc find, t_data inside, void *this)
+static int	get_specific_node(t_alloc find, t_data inside, void *this, int opt)
 {
 	while (find.inside)
 	{
@@ -62,6 +62,10 @@ static int	get_specific_node(t_alloc find, t_data inside, void *this)
 				ft_dprintf(2, "Free: freeing %p\n", find.inside->user_data);
 				find.inside->available = 1;
 				find.head->freed_bytes += inside.user_size;
+				if (opt == 1)
+					find.top->tny_allocs--;
+				else
+					find.top->med_allocs--;
 				if (find.top->med_allocs == 0 && find.top->tny_allocs == 0)
 					return ((free_entire_slab(find)));
 				return (1);
@@ -70,7 +74,6 @@ static int	get_specific_node(t_alloc find, t_data inside, void *this)
 		}
 		find.inside = find.inside->next;
 	}
-	ft_dprintf(2, "Free: something is very wrong\n");
 	return (0);
 }
 
@@ -82,14 +85,14 @@ static int	check_smaller_nodes(t_alloc find, void *this)
 		if (this < (void*)find.top->med)
 		{
 			find.inside = find.top->tny;
-			find.top->tny_allocs--;
-			return ((get_specific_node(find, *find.inside, this)));
+			if (get_specific_node(find, *find.inside, this, 1))
+				return (1);
 		}
 		else if (this < (void*)find.top->med_end)
 		{
 			find.inside = find.top->med;
-			find.top->med_allocs--;
-			return ((get_specific_node(find, *find.inside, this)));
+			if (get_specific_node(find, *find.inside, this, 2))
+				return (1);
 		}
 		find.prev_node = find.top;
 		find.top = find.top->next;
@@ -103,6 +106,7 @@ void		free(void *this)
 
 	find.head = get_head();
 	find.top = find.head;
+	ft_printf("Free: pointer address %p\n", this);
 	if (!this)
 		return ;
 	if (check_smaller_nodes(find, this))
