@@ -102,7 +102,7 @@ EXE = test
 all: $(NAME)
 
 $(NAME):
-	@gcc -Wall -Wextra -Werror -c $(SRCS)
+	@gcc -Wall -Wextra -Werror -fPIC -c $(SRCS)
 	@ar rc $(NAME) *.o
 	@ranlib $(NAME)
 	@echo "\033[33;32mLibft: Ready >:D"

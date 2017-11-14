@@ -29,7 +29,6 @@ static t_data	*memory_maker(t_alloc *find, size_t size)
 	ptr->user_data = ((void*)ptr) + sizeof(t_data);
 	find->head->large_allocs++;
 	find->head->total_allocs++;
-	ft_dprintf(2, "Malloc: new big node %p\n", ptr);
 	return (ptr);
 }
 
@@ -52,7 +51,6 @@ static t_data	*use_smaller_node(t_alloc *find, t_data *start, size_t size)
 			start->user_size = size;
 			start->available = 0;
 			find->head->total_allocs++;
-			ft_dprintf(2, "Malloc: new smaller node %p\n", start->user_data);
 			break ;
 		}
 		start = start->next;
@@ -78,7 +76,6 @@ static t_data	*allocate_smaller_node(t_alloc *find, size_t size)
 			find->top->next = slab_carver();
 		find->top = find->top->next;
 	}
-	ft_dprintf(2, "Malloc: System out of memory\n");
 	return (NULL);
 }
 
@@ -95,13 +92,11 @@ void			*malloc(size_t size)
 	if (size > MEDSIZE)
 	{
 		ptr = (allocate_big_node(&find, size))->user_data;
-		ft_printf("Malloc: pointer address %p\n", ptr);
 		return (ptr);
 	}
 	else
 	{
 		ptr = (allocate_smaller_node(&find, size))->user_data;
-		ft_printf("Malloc: pointer address %p\n", ptr);
 		return (ptr);
 	}
 	return (NULL);

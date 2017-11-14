@@ -59,7 +59,6 @@ static int	get_specific_node(t_alloc find, t_data inside, void *this, int opt)
 		{
 			if (find.inside->available == 0)
 			{
-				ft_dprintf(2, "Free: freeing %p\n", find.inside->user_data);
 				find.inside->available = 1;
 				find.head->freed_bytes += inside.user_size;
 				if (opt == 1)
@@ -106,7 +105,6 @@ void		free(void *this)
 
 	find.head = get_head();
 	find.top = find.head;
-	ft_printf("Free: pointer address %p\n", this);
 	if (!this)
 		return ;
 	if (check_smaller_nodes(find, this))

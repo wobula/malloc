@@ -25,7 +25,7 @@ LIBFTHEAD = -I ./libft/includes/
 
 GCC = gcc
 HEADERS = -I ./includes/
-FLAGS += -Wall -Wextra -Werror
+FLAGS += -Wall -Wextra -Werror -fPIC
 SRC = ./src/malloc.c \
 	  ./src/realloc.c \
 	  ./src/free.c \
@@ -33,7 +33,7 @@ SRC = ./src/malloc.c \
 	  ./src/show_alloc_mem.c \
 	  ./src/calloc.c \
 
-COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
+COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME)
 TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(TESTSRC) -o $(TESTNAME) -g
 
 OUTPUTBUILD = echo "\033[32mBuilding Malloc\033[0m"

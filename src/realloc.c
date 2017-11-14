@@ -18,7 +18,6 @@ static int	get_specific_allocation(t_alloc *find, t_data *inside, void *this)
 	{
 		if (inside->user_data == this)
 		{
-			ft_dprintf(2, "Realloc: smaller section %p\n", inside->user_data);
 			find->inside = inside;
 			return (1);
 		}
@@ -37,7 +36,6 @@ static int	search_small_nodes(t_alloc *find, void *this)
 			return ((get_specific_allocation(find, find->top->med, this)));
 		find->top = find->top->next;
 	}
-	ft_dprintf(2, "Realloc: something went very wrong\n");
 	return (0);
 }
 
@@ -48,7 +46,6 @@ static int	search_big_nodes(t_alloc *find, void *this)
 	{
 		if (find->inside->user_data == this)
 		{
-			ft_printf("Realloc: large section %p\n", find->inside->user_data);
 			return (1);
 		}
 		find->inside = find->inside->next;
