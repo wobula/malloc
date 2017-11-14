@@ -21,16 +21,16 @@ int		main(void)
 	int x;
 
 	x = -1;
-	while (1)
-	{
+	//while (1)
+	//{
 		x = -1;
 	while (x++ < 2)
 	{
 		ft_putstr("sup\n");
 		ptr = malloc(10);
 		ptr2 = malloc(10);
-		ptr3 = malloc(10);
-		ptr4 = malloc(10);
+		ptr3 = malloc(301);
+		ptr4 = malloc(301);
 		ft_putstr("yo\n");
 		free(ptr);
 		ft_putstr("yo1\n");
@@ -41,6 +41,6 @@ int		main(void)
 		free(ptr4);
 		ft_putstr("yo4\n");
 	}
-}
+//}
 	return (0);
 }

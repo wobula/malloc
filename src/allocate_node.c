@@ -69,7 +69,7 @@ t_node		*slab_carver(void)
 	ft_dprintf(2, "Allocate: med beg %p\n", ptr->med);
 	ptr->med_block = (sizeof(t_data) + MEDSIZE) * NODECOUNT;
 	ptr->med_end = (t_data*)(((char*)(ptr->med + 1)) + ((sizeof(t_data) + MEDSIZE) * (NODECOUNT)));
-	ft_dprintf(2, "Allocate: med end %p\n", ptr->med);
+	ft_dprintf(2, "Allocate: med end %p\n", ptr->med_end);
 	block_builder(ptr->med, NODECOUNT, MEDSIZE);
 	return (ptr);
 }
