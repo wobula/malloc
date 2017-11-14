@@ -34,7 +34,7 @@ static void		block_builder(t_data *start, int node_count, int storage_size)
 
 static t_node	*node_builder(void)
 {
-	t_node *this;
+	t_node	*this;
 	int		get_size;
 	int		data;
 
@@ -81,7 +81,7 @@ t_node			*slab_carver(void)
 	return (ptr);
 }
 
-void		free_head(void)
+void			free_head(void)
 {
 	t_node *please;
 	t_node *prev;
@@ -99,7 +99,7 @@ void		free_head(void)
 	g_head = NULL;
 }
 
-t_node		*get_head(void)
+t_node			*get_head(void)
 {
 	if (!g_head)
 		g_head = slab_carver();
