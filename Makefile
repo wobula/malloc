@@ -34,7 +34,7 @@ SRC = ./src/malloc.c \
 	  ./src/calloc.c \
 
 COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
-TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(TESTSRC) -o $(TESTNAME) -g
+TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(TESTSRC) -o $(TESTNAME) ./libft/*.o -g
 
 OUTPUTBUILD = echo "\033[32mBuilding Malloc\033[0m"
 OUTPUTCLEAN = echo "\033[31mRemoving Objects\033[0m"
