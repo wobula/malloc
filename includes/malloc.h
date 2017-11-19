@@ -16,8 +16,8 @@
 # include <sys/mman.h>
 # include "../libft/includes/libft.h"
 
-# define TNYSIZE 100
-# define MEDSIZE 500
+# define TNYSIZE 160
+# define MEDSIZE 512
 # define NODECOUNT 100
 
 typedef struct		s_node
