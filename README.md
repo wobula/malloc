@@ -51,14 +51,14 @@ The memory for each of these slabs is divided into two subsequent sections, TINY
 
 In other words, we have a head spinal column linked list that is, itself, the starting point for three other rib-cage linked lists: tiny, medium, and large.
 
- #### So what happens when we call malloc?
+#### So what happens when we call malloc?
 
- When a user calls malloc the first time, they first allocate a slab of memory -- a spinal column node -- and in the subsequent functions, they also setup the scaffolding for the rib-cage linked lists that radiate off the spine. Once these ribs are setup, malloc returns the first void pointer in the tny or med section, depending on the size the user requested.  Each subsequent call to malloc involves traversing these TNY and MED linked lists and returning void *ptrs to the user until all 100 nodes are used up.  The next call to malloc will add a second spinal column node to the head node.  Malloc then traverses past the head node, to the next, and it begins returning void *ptrs from the tiny and medium sections of this data structure. Realloc and calloc both operate in a similar manner.
+When a user calls malloc the first time, they first allocate a slab of memory -- a spinal column node -- and in the subsequent functions, they also setup the scaffolding for the rib-cage linked lists that radiate off the spine. Once these ribs are setup, malloc returns the first void pointer in the tny or med section, depending on the size the user requested.  Each subsequent call to malloc involves traversing these TNY and MED linked lists and returning void *ptrs to the user until all 100 nodes are used up.  The next call to malloc will add a second spinal column node to the head node.  Malloc then traverses past the head node, to the next, and it begins returning void *ptrs from the tiny and medium sections of this data structure. Realloc and calloc both operate in a similar manner.
 
  One other side note: you may have noticed that there is a large section.  This large section has it's own linked list, but for my implimentation, all large allocations are located off the head spinal node.
 
- #### What about free?
+#### What about free?
 
-When we provide a void *ptr to free, free begins looking for our ptr.  It starts at the head of each spine node and checks to see if our pointer is within the range of the pointers for this section (if not, it goes to the next spinal node).  Once free finds the correct spinal node, it begins checking the lower level, ribcage linked lists with similar pointer range comparisons.  If it finds that our pointer is in the tny section, it starts at the first node of the tny section and does a pointer comparison with each void*ptr until it finds our pointer.
+When we provide a void ptr to free, free begins looking for our ptr.  It starts at the head of each spine node and checks to see if our pointer is within the range of the pointers for this section (if not, it goes to the next spinal node).  Once free finds the correct spinal node, it begins checking the lower level, ribcage linked lists with similar pointer range comparisons.  If it finds that our pointer is in the tny section, it starts at the first node of the tny section and does a pointer comparison with each void ptr until it finds our pointer.
 
 One other thing free does is if we free all the allocations -- both tny and med -- free will also free the spinal node for this section.
