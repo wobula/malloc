@@ -21,6 +21,8 @@ Calloc allocates sets of data by multiplying nitems by size and returning a poin
 ##### void show_alloc_mem(void);
 Show alloc mem is a debugging function that prints out statistics on a programs memory usage.
 
+![Input Content](https://raw.githubusercontent.com/wobula/malloc/master/1.png)
+
 ## Explanation
 
 Why do we use Malloc?  Two reasons: convenience and speed.
@@ -47,9 +49,9 @@ This specific implimentation of malloc uses a multidimensional, embedded linked 
 
 #### Now let's add a little bit of complexity
 
-The memory for each of these slabs is divided into two subsequent sections, TINY and MEDIUM.  Both of these sections are, themselves, a linked list.  The structs for these two linked lists consist of two parts per node: a meta-data struct and the void *ptr to the users memory allocation.
+The memory for each of these slabs is divided into two subsequent sections, TINY and MEDIUM.  Both of these sections are, themselves, also linked lists.  The structs for these two linked lists consist of two parts per node: a meta-data struct and the void ptr housing the user's requested memory.
 
-In other words, we have a head spinal column linked list that is, itself, the starting point for three other rib-cage linked lists: tiny, medium, and large.
+The metaphor I use when thinking about all of these data structures is that of the human spinal column.  The head node of our linked list represents the top of the spine.  Each successive call to malloc that involves creating a new slab of memory adds another vertebra to this spine.  Each one of these vertebra contain--to continue the human anatomy metaphor--three seperate ribs.  These ribs are where the user's specific void pointer are located
 
 #### So what happens when we call malloc?
 
