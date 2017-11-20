@@ -45,7 +45,7 @@ Malloc is easier on the computer because it doesn't task the kernel nearly as mu
 
 This specific implimentation of malloc uses a multidimensional, embedded linked list data structure.  What this means is that when we first call malloc, we ask the kernel for a large slab of memory.  The struct that contains all the meta-data about this slab is, itself, the first node of a linked list.  Each successive call to mmap for another slab adds another node to this original, head node.  The structure of this system is a simple singularly linked list as shown below:
 
-![Input Content](https://raw.githubusercontent.com/wobula/malloc/master/1.png)
+![Input Content](https://raw.githubusercontent.com/wobula/malloc/master/2.png)
 
 #### Now let's add a little bit of complexity
 
