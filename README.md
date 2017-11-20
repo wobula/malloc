@@ -49,8 +49,8 @@ This specific implimentation of malloc uses a multidimensional, embedded linked 
 
 The memory for each of these slabs is divided into two subsequent sections, TINY and MEDIUM.  Both of these sections are, themselves, a linked list.  The structs for these two linked lists consist of two parts per node: a meta-data struct and the void *ptr to the users memory allocation.  See the image below:
 
-[head_node]--[next_slab]--NULL
- ^
+#### [head_node]--[next_slab]--NULL
+####  ^
  |
  |
  |
