@@ -51,13 +51,13 @@ The memory for each of these slabs is divided into two subsequent sections, TINY
 
 [head_node]--[next_slab]--NULL
  ^  ^ ^       ^  ^  ^
- |  | |       |  |  |---Large section is present in data structure but only used on head node
+ |  | |       |  |  |---Large section not used here
  |  | |       | MEDIUM
  |  | |       TNY
  |  | |
- |  | |---Large [[meta-ptr](user void*ptr)]--[[meta-ptr](user void*ptr)]--[[meta-ptr](user void*ptr)]--continues infinity
- | MEDIUM [[meta-ptr](user void*ptr)]--[[meta-ptr](user void*ptr)]--[[meta-ptr](user void*ptr)]--continues to 100 nodes and then NULL
- TNY [[meta-ptr](user void*ptr)]--[[meta-ptr](user void*ptr)]--[[meta-ptr](user void*ptr)]--continues to 100 nodes and then NULL
+ |  | |---Large [[meta-ptr](user void*ptr)]--NULL
+ | MEDIUM [[meta-ptr](user void*ptr)]--100 nodes then NULL
+ TNY [[meta-ptr](user void*ptr)]--100 nodes then NULL
 
  In other words, we have a head spinal column linked list with three other rib-cage linked lists coming off each node of this list.
 
