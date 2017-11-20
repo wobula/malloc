@@ -1,8 +1,8 @@
 # Malloc
 
-### a dynamic memory allocation and recycling system
+#### a dynamic memory allocation and recycling system
 
-#### Summary
+### Summary
 
 Malloc is a memory management system consisting of the following five functions:
 
@@ -21,11 +21,11 @@ Calloc allocates sets of data by multiplying nitems by size and returning a poin
 ##### void show_alloc_mem(void);
 Show alloc mem is a debugging function that prints out statistics on a programs memory usage.
 
-#### Explanation
+### Explanation
 
 Why do we use Malloc?  Two reasons: convenience and speed.
 
-##### Convenience
+#### Convenience
 
 The system call for requesting memory, mmap, has the following function prototype:
 
@@ -33,6 +33,6 @@ void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset)
 
 A quick comparison of mmap's prototype with Malloc's, and we can see that malloc is much simpler.  Where mmap takes 6 arguments, malloc takes one.  But beyond this surface level ease in terms of supplying arguments, Malloc is also easier, not just on the programmer, but also *on the computer*.  Read the next section to find out why.
 
-##### Speed
+#### Speed
 
 Malloc is easier on the computer because it doesn't task the kernel nearly as much as mmap.  The reason for this is that malloc calls mmap once in order to allocate a giant *slab* of memory, which it then parcels out to the user during each subsequent malloc call.  If malloc runs out of memory -- then it calls mmap and asks for more memory, but not until then.  By asking for a big slab and giving the user a small amount of that slab, we can improve performance through a reduction in kernel taskings.  This is the heart of why we use malloc.
