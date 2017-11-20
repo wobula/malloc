@@ -59,6 +59,6 @@ When a user calls malloc the first time, they first allocate a slab of memory --
 
 #### What about free?
 
-When we provide a void ptr to free, free begins looking for our ptr.  It starts at the head of each spine node and checks to see if our pointer is within the range of the pointers for this section (if not, it goes to the next spinal node).  Once free finds the correct spinal node, it begins checking the lower level, ribcage linked lists with similar pointer range comparisons.  If it finds that our pointer is in the tny section, it starts at the first node of the tny section and does a pointer comparison with each void ptr until it finds our pointer.
+When we provide a void ptr to free, free begins looking for our ptr.  It starts at the head of each spine node and checks to see if our pointer is within the range of the pointers for this section (if not, it goes to the next spinal node).  Once free finds the correct spinal node, it begins checking the lower level, ribcage linked lists with similar pointer range comparisons.  If it finds that our pointer is in the tny section, it starts at the first node of the tny section and does a pointer comparison with each void ptr until it finds our pointer.  Once it finds our pointer, it flips a few switches in the meta-data so that this memory is returning by subsequent calls to malloc.
 
 One other thing free does is if we free all the allocations -- both tny and med -- free will also free the spinal node for this section.
